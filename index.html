@@ -1,337 +1,830 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#102c43" />
-  <title>한신초등학교 | 춘추복 3D 캐릭터 체험</title>
-  <style>
-    :root{--navy:#17324a;--green:#2b7f57;--bg:#eef4f4;--text:#17324a;--line:#d8e4e6;--soft:#f7fbfb}
-    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,'Malgun Gothic',sans-serif;background:var(--bg);color:var(--text)}
-    .shell{max-width:1080px;margin:auto;padding:20px 16px 44px}
-    header{display:flex;gap:14px;align-items:center;margin-bottom:16px}
-    .seal{height:46px;width:46px;border-radius:50%;display:grid;place-items:center;background:#0b6248;color:#fff;font-weight:800;border:4px double #fff;box-shadow:0 0 0 2px #0b6248}
-    .eyebrow{font-size:11px;letter-spacing:2px;color:#4f7f70;font-weight:800}.title{font-size:24px;font-weight:800;letter-spacing:-.7px;margin-top:3px}
-    .intro{font-size:14px;line-height:1.65;color:#5a6f7a;margin:0 0 16px}
-    .layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:18px}
-    .card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 35px rgba(20,42,56,.06);overflow:hidden}
-    .viewer{padding:14px}
-    .stage{position:relative;aspect-ratio:3/4;max-height:75vh;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#dcebed 0%, #c8ded9 50%, #dbe7e2 100%)}
-    video,.bg,.gl{position:absolute;inset:0;width:100%;height:100%}
-    video{object-fit:cover;background:#d5e1e3}
-    .mirror{transform:scaleX(-1)}
-    .bg{background:radial-gradient(circle at 50% 18%, rgba(255,255,255,.70), rgba(255,255,255,0) 35%), linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%)}
-    .gl{pointer-events:none}
-    .empty{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:24px;gap:8px;pointer-events:none;background:linear-gradient(180deg, rgba(238,244,244,.74), rgba(238,244,244,.18));backdrop-filter: blur(2px)}
-    .empty .big{font-size:54px}.empty p{margin:0;color:#61747f;line-height:1.6;font-size:13px}
-    .status{display:flex;gap:7px;align-items:center;padding:12px 4px 2px;color:#647884;font-size:12px}.dot{height:8px;width:8px;border-radius:50%;background:#d6a24a;flex:none}.dot.on{background:#149669}.dot.err{background:#d14a4a}
-    .controls{padding:18px}.controls h2{font-size:18px;margin:0 0 14px}.field{margin-bottom:16px}.label{display:block;margin-bottom:10px;font-size:13px;font-weight:780}
-    .choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}.choice button,.btn,.toggle{border:1px solid var(--line);background:#f3f8f8;border-radius:12px;padding:12px 14px;font-weight:780;font-size:14px;color:#29495b;cursor:pointer}
-    .btn.primary{background:var(--green);border-color:var(--green);color:#fff}.btn.secondary{background:#eaf1f4}.btn.warn{background:#fff4ec;border-color:#f0c89c;color:#8d5d27}
-    .choice button.active,.toggle.active{background:#17324a;color:#fff;border-color:#17324a}
-    .stack{display:grid;gap:8px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-    .slider{width:100%;accent-color:var(--green)} .small{font-size:12px;color:#68808c}
-    .chips{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:7px 10px;border-radius:999px;background:#eef4f4;color:#496573;font-size:12px;font-weight:700;border:1px solid #dde7e9}
-    .notice{font-size:12px;line-height:1.65;color:#607580;margin:14px 0 0}.footer{font-size:11px;color:#83929c;text-align:center;margin-top:18px}
-    .panel{padding:12px;border:1px solid #e5edef;border-radius:15px;background:var(--soft)}
-    @media (max-width:780px){.layout{grid-template-columns:1fr}.shell{padding:14px 12px 38px}.title{font-size:22px}.stage{max-height:68vh}.controls{padding:16px}.grid3{grid-template-columns:1fr}.actions{grid-template-columns:1fr 1fr}}
-  </style>
+<meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#143248">
+<title>한신초 | 춘추복 · 내 얼굴 캐릭터</title>
+<style>
+:root{--navy:#203152;--navy2:#2d4067;--green:#287348;--bg:#eef4f5;--card:#ffffff;--line:#d9e3e8;--text:#173246;--muted:#607482}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;background:linear-gradient(180deg,#f6fbfc,#e9f1f3 50%,#f8fbfc);color:var(--text)}
+.shell{max-width:1100px;margin:auto;padding:18px 14px 42px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:14px}.seal{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#0b6248;color:#fff;font-weight:800;border:4px double #fff;box-shadow:0 0 0 2px #0b6248}.eyebrow{font-size:11px;letter-spacing:2px;font-weight:800;color:#377264}.title{font-size:24px;font-weight:800;letter-spacing:-.7px;margin-top:2px}
+.intro{margin:0 0 16px;color:#536977;font-size:14px;line-height:1.62}
+.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 8px 32px rgba(19,52,73,.06);overflow:hidden}
+.viewer{padding:14px}.stage{position:relative;background:#d7e4e7;border-radius:16px;overflow:hidden;aspect-ratio:3/4;max-height:76vh;display:flex;align-items:center;justify-content:center}.stage canvas{display:block;width:100%;height:100%}.empty{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:24px;pointer-events:none}.empty .big{font-size:52px}.empty p{margin:7px 0 0;color:#6a7d87;font-size:13px;line-height:1.6}
+.statusbar{display:flex;align-items:center;gap:8px;padding:12px 4px 2px;color:#5b7180;font-size:12px;flex-wrap:wrap}.dot{width:8px;height:8px;border-radius:50%;background:#d6a34c}.dot.on{background:#159568}.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:999px;background:#edf5f1;border:1px solid #d5e6dc;font-size:11px;color:#255843;font-weight:700}
+.panel{padding:20px}.panel h2{font-size:17px;margin:0 0 14px}.field{margin-bottom:18px}.label{display:block;font-size:13px;font-weight:780;margin-bottom:10px}.btn{width:100%;padding:13px 16px;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer}.btn.primary{background:#0c654c;color:#fff}.btn.secondary{background:#e8f0f3;color:#234a5e}.btn.ghost{background:#fff;border:1px solid #dbe6eb;color:#395867}.btn:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.preview{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e1eaee;border-radius:14px;background:#fafdfd}.mini{width:70px;height:94px;border-radius:10px;background:linear-gradient(180deg,#f1f5f7,#dbe5ea);position:relative;overflow:hidden;flex-shrink:0}.mini svg{display:block;width:100%;height:100%}
+.note{font-size:12px;line-height:1.62;color:#5d7380}.check{display:flex;gap:8px;align-items:flex-start;margin-top:8px}.check input{margin-top:2px}.small{font-size:12px;color:#6b7d86}
+.range{width:100%;accent-color:#0c654c}.rangeinfo{display:flex;justify-content:space-between;color:#617784;font-size:12px;margin:7px 0}.footer{font-size:11px;color:#7d8d97;text-align:center;margin-top:16px}
+video{display:none}
+@media (max-width:720px){.layout{grid-template-columns:1fr}.shell{padding:14px 12px 36px}.title{font-size:22px}.stage{max-height:68vh}.actions3{grid-template-columns:1fr 1fr}.actions3 .btn:last-child{grid-column:1 / -1}}
+
+.version{display:inline-block;padding:5px 9px;border-radius:7px;background:#173f35;color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;margin:0 0 8px}
+.segmented{display:flex;gap:8px}.segmented button{flex:1;border:1px solid #d9e3e8;border-radius:10px;padding:11px 4px;background:#f7fafb;color:#456372;font-weight:750;cursor:pointer}.segmented button.selected{background:#e4f2eb;border:2px solid #137855;color:#125638}
+.capture-preview canvas{width:100%;max-height:200px;object-fit:contain;display:block;border-radius:12px;background:#182d38;touch-action:none;cursor:crosshair}
+.capture-preview p{margin:6px 0 15px}.rangeinfo label{font-weight:600}
+[hidden]{display:none!important}.small{line-height:1.6}#faceStatus{padding:8px 10px;background:#f1f6f4;border-radius:8px}
+details{margin-top:16px;border-top:1px solid #e4ebee;padding-top:14px}summary{font-size:13px;font-weight:700;cursor:pointer}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.5 monospace;max-height:230px;overflow:auto}
+#video{display:block;position:fixed;left:-10px;bottom:0;width:2px;height:2px;opacity:.001;pointer-events:none}
+.stage{aspect-ratio:3/4;max-height:none;width:100%;max-width:min(100%,54vh);margin:auto}.stage canvas{width:100%;height:auto;aspect-ratio:3/4}
+@media(min-width:721px){.viewer{align-self:start;position:sticky;top:14px}.stage{max-width:none}.panel{padding:20px}.shell{max-width:1040px}}
+
+</style>
 </head>
 <body>
-  <main class="shell">
-    <header>
-      <div class="seal">한신</div>
-      <div>
-        <div class="eyebrow">HANSIN ELEMENTARY SCHOOL · SPRING UNIFORM</div>
-        <div class="title">춘추복 3D 캐릭터 체험</div>
-      </div>
-    </header>
-    <p class="intro">카메라 앞에 서면 <strong>춘추복을 입은 3D 캐릭터 아바타</strong>가 움직임을 따라갑니다. 기존처럼 교복 그림을 붙이는 방식이 아니라, 몸통·팔·다리를 따로 움직이는 <strong>캐릭터형 체험</strong>입니다.</p>
-    <div class="layout">
-      <section class="card viewer">
-        <div class="stage" id="stage">
-          <video id="video" autoplay playsinline muted></video>
-          <div class="bg"></div>
-          <canvas id="gl" class="gl" width="720" height="960"></canvas>
-          <div class="empty" id="empty">
-            <div class="big">🧥</div>
-            <strong>춘추복 캐릭터 체험을 시작해 주세요</strong>
-            <p>정면으로 서면 움직임을 따라 3D 캐릭터가 반응합니다.<br>카메라가 어려우면 체험 모드로도 볼 수 있습니다.</p>
-          </div>
-        </div>
-        <div class="status"><i class="dot" id="dot"></i><span id="status">대기 중 · HTTPS 접속에서 실행해 주세요.</span></div>
-      </section>
-      <section class="card controls">
-        <h2>체험 설정</h2>
-        <div class="field panel">
-          <span class="label">교복</span>
-          <div class="chips">
-            <span class="chip">2027 사양서 기준</span>
-            <span class="chip">춘추복 1종</span>
-            <span class="chip">3D 캐릭터형</span>
-          </div>
-        </div>
-        <div class="field">
-          <span class="label">하의 형태</span>
-          <div class="choice" id="lowerSwitch">
-            <button data-lower="pants" class="active">바지형</button>
-            <button data-lower="skirt">치마형</button>
-          </div>
-        </div>
-        <div class="field">
-          <span class="label">보기 방식</span>
-          <div class="stack">
-            <button id="toggleCamera" class="toggle active">카메라 배경 보기</button>
-            <button id="toggleFace" class="toggle">실제 얼굴 사용 (베타)</button>
-            <button id="toggleDemo" class="toggle">체험 모드</button>
-          </div>
-        </div>
-        <div class="field panel">
-          <div class="small">캐릭터 크기 <span id="scaleText">100%</span></div>
-          <input id="scale" class="slider" type="range" min="75" max="145" value="100" />
-          <div class="small" style="margin-top:8px">화면 높이 <span id="liftText">0</span></div>
-          <input id="lift" class="slider" type="range" min="-20" max="24" value="0" />
-        </div>
-        <div class="grid3">
-          <button id="start" class="btn primary">📷 카메라 시작</button>
-          <button id="flip" class="btn secondary" disabled>🔄 카메라 전환</button>
-          <button id="save" class="btn secondary" disabled>📸 사진 저장</button>
-        </div>
-        <div class="actions" style="margin-top:8px">
-          <button id="recenter" class="btn secondary">중앙 정렬</button>
-          <button id="stop" class="btn warn" disabled>카메라 끄기</button>
-        </div>
-        <p class="notice">• 포즈 인식이 잘 되면 어깨·팔꿈치·무릎 움직임에 맞춰 아바타가 반응합니다.<br>• 실제 얼굴 사용은 얼굴 분리 AI가 아니라 원형 크롭 방식이라 배경이 조금 함께 보일 수 있습니다.<br>• 촬영 영상은 서버로 전송하지 않고 기기 안에서만 처리합니다.</p>
-      </section>
+<main class="shell">
+  <header>
+    <div class="seal">한신</div>
+    <div>
+      <div class="eyebrow">HANSIN ELEMENTARY SCHOOL</div>
+      <div class="title">춘추복 · 내 얼굴 캐릭터</div>
     </div>
-    <p class="footer">한신초등학교 2027 교복 디자인 사양서 기반 시제품 · 춘추복 1종</p>
-  </main>
-  <script src="js/engine.js"></script>
-  <script src="js/avatar.js"></script>
-  <script type="module">
-    import { PoseLandmarker, FilesetResolver } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/+esm';
+  </header>
+  <p class="intro"><span class="version">REAL FACE v1.0</span><br>몸은 춘추복 캐릭터로, 얼굴은 <strong>카메라 속 내 얼굴 그대로</strong> 보여 줍니다. 눈·코·입을 새로 그리거나 미화하지 않습니다.</p>
+  <div class="layout">
+    <section class="card viewer">
+      <div class="stage" id="stage">
+        <canvas id="canvas" width="720" height="960"></canvas>
+        <div class="empty" id="empty">
+          <div class="big">📷</div>
+          <strong>카메라를 시작해 주세요</strong>
+          <p>버튼을 누른 뒤 카메라 권한을 허용해 주세요.<br>처음에는 인식 모델을 내려받습니다.</p>
+        </div>
+      </div>
+      <div class="statusbar">
+        <i class="dot" id="dot"></i><span id="status">대기 중 · HTTPS에서 카메라 권한이 필요합니다.</span>
+        <span class="badge" id="modeBadge">카메라 꺼짐</span>
+      </div>
+    </section>
+    <section class="card panel">
+      <h2>내 얼굴로 체험하기</h2>
+      <button id="start" class="btn primary">카메라 시작</button>
+      <div class="actions" style="margin-top:8px">
+        <button id="stop" class="btn ghost" disabled>카메라 끄기</button>
+        <button id="flip" class="btn ghost" disabled>카메라 전환</button>
+      </div>
+      <p id="cameraStatus" class="small" role="status">카메라는 시작 버튼을 누를 때만 켜집니다.</p>
+      <div class="capture-preview" id="previewWrap" hidden>
+        <canvas id="preview" width="360" height="240" aria-label="원본 카메라와 얼굴 인식 영역"></canvas>
+        <p class="small">작은 화면은 원본입니다. 얼굴 위치와 잘리는 범위를 확인하세요.</p>
+      </div>
+      <div class="field">
+        <span class="label">얼굴 표시</span>
+        <div class="segmented">
+          <button id="realMode" class="selected" aria-pressed="true">내 실제 얼굴</button>
+          <button id="cartoonMode" aria-pressed="false">그림 얼굴</button>
+        </div>
+        <p id="faceStatus" class="small" role="status">카메라가 켜지면 얼굴을 찾습니다.</p>
+      </div>
+      <div class="field">
+        <span class="label">현재 교복</span>
+        <div class="preview">
+          <div class="mini" aria-hidden="true">
+            <svg viewBox="0 0 70 94" xmlns="http://www.w3.org/2000/svg">
+              <rect width="70" height="94" fill="#edf3f6"/>
+              <circle cx="35" cy="16" r="9" fill="#ecc2a5"/>
+              <path d="M27 23 L43 23 L50 34 L50 61 L20 61 L20 34 Z" fill="#203152"/>
+              <path d="M30 24 L35 32 L40 24" fill="#fff"/>
+              <path d="M34 24 L36 24 L36 51 L34 51 Z" fill="#287348"/>
+              <path d="M24 34 L20 46 L25 48 L29 37 Z" fill="#203152"/>
+              <path d="M46 34 L50 46 L45 48 L41 37 Z" fill="#203152"/>
+              <rect x="24" y="61" width="10" height="23" rx="4" fill="#203152"/>
+              <rect x="36" y="61" width="10" height="23" rx="4" fill="#203152"/>
+            </svg>
+          </div>
+          <div>
+            <strong>춘추복(바지형) 캐릭터 아바타</strong><br>
+            <span class="small">기존 춘추복 캐릭터 몸 + 실제 얼굴 영상<br>정교한 3D 얼굴 재구성이나 실사 의상 합성은 아닙니다.</span>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="rangeinfo"><label for="faceSize">캐릭터 얼굴 크기</label><span id="faceSizeText">100%</span></div>
+        <input id="faceSize" class="range" type="range" min="75" max="145" value="100">
+        <div class="rangeinfo"><label for="hairMargin">머리 위쪽 포함 범위</label><span id="hairText">보통</span></div>
+        <input id="hairMargin" class="range" type="range" min="0" max="55" value="28">
+        <div class="rangeinfo"><label for="faceOffset">얼굴 높이 맞추기</label><span id="faceOffsetText">0</span></div>
+        <input id="faceOffset" class="range" type="range" min="-30" max="30" value="0">
+        <label class="check"><input type="checkbox" id="manualFace"><span><strong>얼굴 영역 직접 지정</strong><br><span class="small">자동 인식이 안 되거나 잘못된 곳을 잡을 때 사용합니다.</span></span></label>
+        <div id="manualControls" hidden>
+          <p class="small">작은 원본 화면에서 얼굴 중심을 누르고 범위를 조절해 주세요.</p>
+          <div class="rangeinfo"><label for="manualWidth">잘라올 영역 크기</label><span id="manualWidthText">100%</span></div>
+          <input id="manualWidth" class="range" type="range" min="45" max="230" value="100">
+        </div>
+      </div>
+      <div class="field">
+        <div class="rangeinfo"><span>아바타 크기 미세 조절</span><span id="scaleText">100%</span></div>
+        <input id="scale" class="range" type="range" min="80" max="135" value="100" aria-label="아바타 크기 조절">
+      </div>
+      <div class="field">
+        <label class="check"><input type="checkbox" id="showCamera"> <span><strong>배경에 카메라 화면 보이기</strong><br><span class="small">기본은 가상 배경입니다. 켜면 원래 옷과 배경도 보일 수 있습니다.</span></span></label>
+        <label class="check"><input type="checkbox" id="mirror" checked> <span><strong>거울 모드</strong><br><span class="small">일반 셀카처럼 좌우가 뒤집힌 화면으로 보입니다.</span></span></label>
+      </div>
+      <div class="actions">
+        <button id="demo" class="btn secondary">카메라 없는 시연</button>
+        <button id="save" class="btn primary" disabled>착용 사진 저장</button>
+      </div>
+      <p id="saveStatus" class="small" role="status"></p>
+      <details id="diagnostics">
+        <summary>인식 문제 해결 · 진단</summary>
+        <p class="small">자동 인식이 안 되면 ‘얼굴 영역 직접 지정’을 켜고 작은 원본 화면에서 얼굴을 눌러 주세요. 수동 지정에서는 움직일 때 영역을 다시 맞춰야 합니다.</p>
+        <button id="retry" class="btn ghost">자동 인식 다시 불러오기</button>
+        <pre id="debug" aria-label="사진이 포함되지 않은 진단 정보"></pre>
+      </details>
+      <p class="note" style="margin-top:14px">영상과 얼굴 조각은 브라우저 메모리에서만 처리합니다. 이 앱에는 사진을 서버로 올리는 기능, 녹음, 얼굴 식별·등록 기능이 없습니다. 외부 접속은 인식 프로그램과 모델을 내려받는 용도이며, 해당 제공자는 접속 IP 등 일반 통신 정보를 받을 수 있습니다.<br><br>얼굴을 못 찾으면 그림 얼굴과 안내 문구로 전환합니다. 긴 머리카락·옆얼굴·손에 가린 부분은 정확히 분리하지 못할 수 있습니다. 저장 버튼을 누른 경우에만 결과 사진 파일을 만듭니다.</p>
+    </section>
+  </div>
+  <p class="footer">한신초등학교 춘추복 캐릭터 체험 시제품 · 무료 웹 앱</p>
+</main>
+<video id="video" playsinline webkit-playsinline muted autoplay aria-hidden="true"></video>
+<script>
 
-    const $ = id => document.getElementById(id);
-    const video = $('video');
-    const canvas = $('gl');
-    const empty = $('empty');
-    const stage = $('stage');
-    const statusEl = $('status');
-    const dot = $('dot');
-    let renderer, avatar, badgeImg;
-    let stream = null, pose = null, poseState = 'idle', started = false, loadingPose = false;
-    let facing = 'user', mirror = true, showCamera = true, faceMode = false, demoMode = false;
-    let lower = 'pants', avatarScale = 1, lift = 0, animation = 0, lastNow = 0, lastDetect = 0;
-    let landmarks = null, track = {x:0, scale:1, yaw:0, lean:0};
-    const faceCanvas = document.createElement('canvas'); faceCanvas.width = faceCanvas.height = 256;
-    const faceCtx = faceCanvas.getContext('2d');
-
-    function setStatus(msg, kind='wait'){
-      statusEl.textContent = msg;
-      dot.classList.toggle('on', kind==='ok');
-      dot.classList.toggle('err', kind==='err');
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const video = $('video'), canvas = $('canvas'), ctx = canvas.getContext('2d');
+const preview = $('preview'), px = preview.getContext('2d');
+const badgeImg = new Image(); badgeImg.src = 'assets/school-badge.png';
+const VERSION = '0.10.21';
+const CDN = [
+  'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@' + VERSION,
+  'https://unpkg.com/@mediapipe/tasks-vision@' + VERSION
+];
+const MODELS = {
+  face: 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',
+  pose: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task'
+};
+const OVAL = [10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109];
+const state = {
+  stream:null, started:false, starting:false, cameraMessage:'',
+  front:true, mirror:true, usingDemo:false, scale:1, faceMode:'real',
+  faceSize:1, faceOffset:0, hair:.28,
+  face:null, pose:null, faceState:'idle', poseState:'idle',
+  facePoints:null, faceROI:null, faceSeen:-Infinity, poseSeen:-Infinity,
+  landmarks:null, loading:null, vision:null,
+  lastFaceDetect:0, lastPoseDetect:0, faceVideoTime:-1, poseVideoTime:-1,
+  generation:0, raf:0, lastFrame:0, lastPreview:0, lastUI:0,
+  manual:{x:.5,y:.25,size:1}, faceSource:'none', faceRendered:false,
+  stats:{frames:0, faceCalls:0, poseCalls:0}, log:[]
+};
+const faceTile=document.createElement('canvas'), tx=faceTile.getContext('2d',{willReadFrequently:true});
+const faceMask=document.createElement('canvas'), mx=faceMask.getContext('2d');
+let maskKey='', previewTransform=null, lastFaceError='', lastPoseError='';
+function text(id,s){if($(id).textContent!==s)$(id).textContent=s;}
+function log(tag,error) {
+  const msg=String(error?.message || error || '').slice(0,240);
+  state.log.push(new Date().toLocaleTimeString()+' '+tag+': '+msg);
+  if(state.log.length>12)state.log.shift();
+}
+function timeout(p,ms,label,onLate) {
+  let finished=false;
+  return new Promise((resolve,reject)=>{
+    const timer=setTimeout(()=>{finished=true;reject(new Error(label));},ms);
+    Promise.resolve(p).then(v=>{
+      if(finished){if(onLate)onLate(v);return;}
+      finished=true;clearTimeout(timer);resolve(v);
+    },e=>{if(finished)return;finished=true;clearTimeout(timer);reject(e);});
+  });
+}
+async function modelBytes(url) {
+  const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),28000);
+  try{
+    const r=await fetch(url,{signal:controller.signal,credentials:'omit',referrerPolicy:'no-referrer'});
+    if(!r.ok)throw new Error('Model HTTP '+r.status);
+    return new Uint8Array(await r.arrayBuffer());
+  }finally{clearTimeout(timer);}
+}
+async function visionAPI() {
+  if(state.vision)return state.vision;
+  let last;
+  for(const base of CDN){
+    try{
+      const api=await timeout(import(base+'/vision_bundle.mjs'),13000,'LibraryLoadTimeout');
+      const files=await timeout(api.FilesetResolver.forVisionTasks(base+'/wasm'),9000,'WasmResolveTimeout');
+      state.vision={api,files};return state.vision;
+    }catch(e){last=e;log('library',e);}
+  }
+  throw last || new Error('LibraryUnavailable');
+}
+async function loadModels() {
+  if(state.loading)return state.loading;
+  state.loading=(async()=>{
+    let v;
+    try{
+      state.faceState=state.face?'ready':'loading';
+      state.poseState=state.pose?'ready':'loading';
+      v=await visionAPI();
+    }catch(e){
+      if(!state.face)state.faceState='error';
+      if(!state.pose)state.poseState='error';
+      log('recognition',e);return;
     }
-
-    async function initScene(){
-      if(renderer) return;
-      renderer = new G3.Renderer(canvas);
-      badgeImg = new Image();
-      badgeImg.src = 'assets/school-badge.png';
-      await new Promise(resolve => { badgeImg.onload = resolve; badgeImg.onerror = resolve; });
-      avatar = new SchoolAvatar(renderer, badgeImg.complete ? badgeImg : null);
-      avatar.lower = lower;
-      resize();
-    }
-
-    function resize(){
-      const r = stage.getBoundingClientRect();
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      canvas.width = Math.round(r.width * dpr);
-      canvas.height = Math.round(r.height * dpr);
-      canvas.style.width = r.width + 'px';
-      canvas.style.height = r.height + 'px';
-    }
-    window.addEventListener('resize', resize);
-
-    async function loadPose(){
-      if(pose || loadingPose) return;
-      loadingPose = true; poseState='loading';
-      setStatus('자세 인식 준비 중…', 'wait');
+    const {api,files}=v;
+    // Face initializes first so the requested feature does not wait for the body model.
+    if(!state.face){
       try{
-        const vision = await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm');
-        pose = await PoseLandmarker.createFromOptions(vision, {
-          baseOptions:{ modelAssetPath:'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task', delegate:'CPU' },
-          runningMode:'VIDEO', numPoses:1,
-          minPoseDetectionConfidence:.45, minPosePresenceConfidence:.45, minTrackingConfidence:.4,
-          outputSegmentationMasks:false
-        });
-        poseState='ready'; setStatus('카메라 실행 중 · 자세 인식 준비 완료', 'ok');
-      }catch(err){
-        console.error(err); poseState='error';
-        setStatus('카메라는 켜졌지만 자세 인식을 불러오지 못했습니다. 체험 모드로 사용 가능합니다.', 'err');
-      }finally{ loadingPose = false; }
+        const bytes=await modelBytes(MODELS.face);
+        state.face=await timeout(api.FaceLandmarker.createFromOptions(files,{
+          baseOptions:{modelAssetBuffer:bytes,delegate:'CPU'}, runningMode:'VIDEO',
+          numFaces:1, minFaceDetectionConfidence:.55, minFacePresenceConfidence:.55,
+          minTrackingConfidence:.5, outputFaceBlendshapes:false,
+          outputFacialTransformationMatrixes:false
+        }),25000,'FaceInitTimeout',x=>{try{x.close();}catch(_){}});
+        state.faceState='ready';log('face','ready');
+      }catch(e){state.faceState='error';log('face',e);}
     }
-
-    function stopStream(){ if(stream){ stream.getTracks().forEach(t=>t.stop()); stream = null; } }
-
-    async function startCamera(){
+    if(!state.pose){
       try{
-        await initScene();
-        stopStream();
-        landmarks = null; track = {x:0, scale:1, yaw:0, lean:0};
-        stream = await navigator.mediaDevices.getUserMedia({
-          video:{ facingMode:facing, width:{ideal:960}, height:{ideal:1280} }, audio:false
-        });
-        video.srcObject = stream;
-        await video.play();
-        mirror = facing === 'user';
-        video.classList.toggle('mirror', mirror && showCamera);
-        empty.style.display = 'none';
-        started = true;
-        $('flip').disabled = false; $('save').disabled = false; $('stop').disabled = false;
-        $('start').textContent = '📷 카메라 다시 시작';
-        setStatus('카메라 실행 중 · 자세 인식 준비 중', 'ok');
-        if(!pose && poseState !== 'loading') loadPose();
-        if(!animation) animation = requestAnimationFrame(render);
-      }catch(err){
-        console.error(err);
-        setStatus('카메라를 열 수 없습니다. HTTPS 접속과 카메라 권한을 확인해 주세요.', 'err');
-      }
+        const bytes=await modelBytes(MODELS.pose);
+        state.pose=await timeout(api.PoseLandmarker.createFromOptions(files,{
+          baseOptions:{modelAssetBuffer:bytes,delegate:'CPU'},runningMode:'VIDEO',
+          numPoses:1,minPoseDetectionConfidence:.45,minPosePresenceConfidence:.45,
+          minTrackingConfidence:.45,outputSegmentationMasks:false
+        }),25000,'PoseInitTimeout',x=>{try{x.close();}catch(_){}});
+        state.poseState='ready';log('pose','ready');
+      }catch(e){state.poseState='error';log('pose',e);}
     }
-
-    function stopCamera(){
-      stopStream(); started=false; landmarks=null; empty.style.display='grid';
-      $('flip').disabled = true; $('save').disabled = true; $('stop').disabled = true;
-      setStatus(demoMode ? '체험 모드 실행 중' : '카메라가 꺼졌습니다.', demoMode ? 'ok' : 'wait');
-    }
-
-    function mirrorX(x){ return mirror ? (1 - x) : x; }
-    function lm(i){ return landmarks?.[i] || null; }
-    function visible(i,t=.2){ const p = lm(i); return !!p && (p.visibility ?? 1) > t; }
-    function v3(i){ const p = lm(i); if(!p) return null; return [mirror ? -(p.x-.5) : (p.x-.5), -(p.y-.5), -(p.z||0)]; }
-    function jointDir(a,b, fallback){ const A=v3(a), B=v3(b); if(!A || !B) return fallback; const dx=B[0]-A[0], dy=B[1]-A[1], dz=(B[2]-A[2])*1.6; const len=Math.hypot(dx,dy,dz)||1; return [dx/len, dy/len, dz/len]; }
-    function computeTrack(){
-      if(!landmarks || !visible(11,.3) || !visible(12,.3) || !visible(23,.2) || !visible(24,.2)) return false;
-      const L = lm(11), R = lm(12), HL = lm(23), HR = lm(24);
-      const shoulderX = (mirrorX(L.x)+mirrorX(R.x))*0.5;
-      const hipX = (mirrorX(HL.x)+mirrorX(HR.x))*0.5;
-      const bodyX = (shoulderX+hipX)*0.5;
-      const shoulderWidth = Math.abs(mirrorX(L.x)-mirrorX(R.x));
-      const bodyScale = Math.max(.85, Math.min(1.55, shoulderWidth/0.16));
-      const shoulderSlope = (R.y - L.y);
-      const depthTurn = Math.max(-.55, Math.min(.55, ((R.z||0) - (L.z||0))*2.2 + (mirrorX(R.x)-mirrorX(L.x))*0.18));
-      track.x = (bodyX - .5) * 1.26;
-      track.scale = bodyScale;
-      track.yaw = depthTurn;
-      track.lean = Math.max(-.18, Math.min(.18, shoulderSlope * 1.2));
-
-      const dirs = avatar.target;
-      dirs.leftUpper = jointDir(11,13,dirs.leftUpper); dirs.leftFore = jointDir(13,15,dirs.leftFore);
-      dirs.rightUpper = jointDir(12,14,dirs.rightUpper); dirs.rightFore = jointDir(14,16,dirs.rightFore);
-      dirs.leftThigh = jointDir(23,25,dirs.leftThigh); dirs.leftShin = jointDir(25,27,dirs.leftShin);
-      dirs.rightThigh = jointDir(24,26,dirs.rightThigh); dirs.rightShin = jointDir(26,28,dirs.rightShin);
-      avatar.target = dirs; avatar.targetYaw = track.yaw; avatar.targetLean = track.lean;
-      return true;
-    }
-
-    function updateFace(){
-      if(!faceMode || !started || !video.videoWidth || !landmarks || !visible(0,.2)) { avatar?.setFace(faceCanvas,false); return; }
-      const nose = lm(0), lEar = lm(7), rEar = lm(8), lShoulder = lm(11), rShoulder = lm(12);
-      const cx = ((nose?.x ?? 0.5) * video.videoWidth);
-      let w = Math.abs((lEar?.x ?? (nose.x-.06)) - (rEar?.x ?? (nose.x+.06))) * video.videoWidth * 1.85;
-      if(!w || !isFinite(w)) w = Math.abs((lShoulder?.x ?? .38) - (rShoulder?.x ?? .62)) * video.videoWidth * .42;
-      w = Math.max(120, Math.min(video.videoWidth*.6, w));
-      const h = w * 1.22;
-      let x = cx - w/2, y = (nose.y * video.videoHeight) - h*0.34;
-      x = Math.max(0, Math.min(video.videoWidth - w, x)); y = Math.max(0, Math.min(video.videoHeight - h, y));
-      faceCtx.clearRect(0,0,256,256);
-      faceCtx.save();
-      faceCtx.beginPath(); faceCtx.arc(128,128,120,0,Math.PI*2); faceCtx.closePath(); faceCtx.clip();
-      if(mirror){ faceCtx.translate(256,0); faceCtx.scale(-1,1); }
-      faceCtx.drawImage(video, x, y, w, h, 16, 8, 224, 240);
-      faceCtx.restore();
-      avatar.setFace(faceCanvas,true);
-    }
-
-    function render(now){
-      animation = 0;
-      const dt = Math.min(.05, lastNow ? (now - lastNow)/1000 : .016); lastNow = now;
-      if(renderer && avatar){
-        if(started && pose && poseState==='ready' && video.readyState >= 2 && now - lastDetect > 90){
-          lastDetect = now;
-          try{ landmarks = pose.detectForVideo(video, now).landmarks?.[0] || null; }
-          catch(err){ console.warn(err); landmarks = null; }
-        }
-        const tracked = computeTrack();
-        if(faceMode) updateFace();
-        else avatar.setFace(faceCanvas,false);
-        const t = now / 1000;
-        avatar.lower = lower;
-        if(demoMode || !tracked) avatar.animate(t,'demo',dt); else avatar.animate(t,'live',dt);
-        const eye=[0,1.38,4.2], target=[0,1.02,0];
-        renderer.begin(eye,target);
-        const size = (1.12 * avatarScale) * (tracked ? track.scale : 1);
-        const tx = (demoMode && !started) ? 0 : (tracked ? track.x : 0);
-        avatar.render(0, size, tx);
-        if(showCamera && started){ video.style.visibility='visible'; }
-        else { video.style.visibility='hidden'; }
-        if(demoMode && !started) setStatus('체험 모드 실행 중', 'ok');
-        else if(started && tracked) setStatus('사람 인식 중 · 춘추복 캐릭터가 움직임을 따라갑니다', 'ok');
-        else if(started) setStatus(poseState==='error' ? '카메라 실행 중 · 자세 인식 실패, 체험 모드 또는 기본 대기' : '카메라 실행 중 · 정면으로 서면 더 잘 인식합니다', 'ok');
-      }
-      if(started || demoMode) animation = requestAnimationFrame(render);
-    }
-
-    function downloadShot(){
-      if(!renderer) return;
-      const out = document.createElement('canvas');
-      out.width = canvas.width; out.height = canvas.height;
-      const x = out.getContext('2d');
-      if(showCamera && started && video.videoWidth){
-        const vw = video.videoWidth, vh = video.videoHeight, W=out.width, H=out.height;
-        const s = Math.max(W/vw, H/vh), dw=vw*s, dh=vh*s, ox=(W-dw)/2, oy=(H-dh)/2;
-        x.save();
-        if(mirror){ x.translate(W,0); x.scale(-1,1); }
-        x.drawImage(video, ox, oy, dw, dh); x.restore();
-      } else {
-        x.fillStyle = '#dcebed'; x.fillRect(0,0,out.width,out.height);
-      }
-      x.drawImage(canvas,0,0);
-      out.toBlob(blob => {
-        if(!blob) return;
-        const url = URL.createObjectURL(blob); const a=document.createElement('a');
-        a.href=url; a.download='hansin-spring-3d-avatar.png'; a.click();
-        setTimeout(()=>URL.revokeObjectURL(url),5000);
-      }, 'image/png');
-    }
-
-    $('start').onclick = startCamera;
-    $('flip').onclick = () => { facing = facing==='user' ? 'environment' : 'user'; startCamera(); };
-    $('stop').onclick = () => { stopCamera(); if(animation) cancelAnimationFrame(animation), animation=0; if(demoMode) animation=requestAnimationFrame(render); };
-    $('save').onclick = downloadShot;
-    $('recenter').onclick = () => { track = {x:0, scale:1, yaw:0, lean:0}; avatar?.reset(); };
-    $('toggleCamera').onclick = e => { showCamera = !showCamera; e.target.classList.toggle('active', showCamera); e.target.textContent = showCamera ? '카메라 배경 보기' : '캐릭터만 보기'; video.classList.toggle('mirror', mirror && showCamera); };
-    $('toggleFace').onclick = e => { faceMode = !faceMode; e.target.classList.toggle('active', faceMode); };
-    $('toggleDemo').onclick = e => {
-      demoMode = !demoMode; e.target.classList.toggle('active', demoMode);
-      if(demoMode){ empty.style.display='none'; initScene().then(()=>{ if(!animation) animation=requestAnimationFrame(render); }); }
-      else if(!started){ empty.style.display='grid'; if(animation) cancelAnimationFrame(animation), animation=0; }
-    };
-    document.querySelectorAll('[data-lower]').forEach(btn => btn.onclick = () => {
-      lower = btn.dataset.lower; document.querySelectorAll('[data-lower]').forEach(x=>x.classList.toggle('active', x===btn)); if(avatar) avatar.lower = lower;
+  })().finally(()=>{state.loading=null;});
+  return state.loading;
+}
+function clearFace() {
+  state.facePoints=null;state.faceROI=null;state.faceSeen=-Infinity;state.faceSource='none';
+  state.faceRendered=false;maskKey='';
+  tx.clearRect(0,0,faceTile.width,faceTile.height);
+  mx.clearRect(0,0,faceMask.width,faceMask.height);
+}
+function clearTracking() {
+  clearFace();state.landmarks=null;state.poseSeen=-Infinity;
+  state.faceVideoTime=state.poseVideoTime=-1;state.lastFaceDetect=state.lastPoseDetect=0;
+}
+function stopTracks() {
+  if(state.stream)state.stream.getTracks().forEach(t=>t.stop());
+  state.stream=null;state.started=false;
+  video.pause();video.srcObject=null;
+  clearTracking();px.clearRect(0,0,preview.width,preview.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  $('previewWrap').hidden=true;
+  $('stop').disabled=true;$('flip').disabled=true;
+}
+function stopCamera(message='카메라를 껐습니다. 얼굴 조각과 화면 표시를 지웠습니다.') {
+  state.generation++;stopTracks();state.starting=false;state.usingDemo=false;
+  state.cameraMessage=message;$('start').disabled=false;
+  text('start','카메라 시작');$('save').disabled=true;
+}
+function cameraError(e) {
+  const labels={
+    NotAllowedError:'카메라 권한이 차단되었습니다. 브라우저의 사이트 카메라 권한을 허용해 주세요.',
+    NotFoundError:'사용 가능한 카메라를 찾지 못했습니다.',
+    NotReadableError:'다른 앱이 카메라를 사용 중이거나 기기에서 접근을 막았습니다.',
+    SecurityError:'이 환경에서 카메라를 허용하지 않습니다. HTTPS 주소를 브라우저에서 직접 열어 주세요.',
+    CameraTimeout:'권한 대기 시간이 지났습니다. 권한을 확인한 뒤 다시 눌러 주세요.',
+    VideoTimeout:'카메라 영상이 준비되지 않았습니다. 브라우저에서 다시 시도해 주세요.',
+    InsecureContext:'카메라는 HTTPS 주소 또는 컴퓨터의 localhost에서 실행해 주세요.'
+  };
+  return labels[e.name] || labels[e.message] || ('카메라를 열 수 없습니다: '+(e.message||e.name));
+}
+async function startCamera() {
+  if(state.starting)return;
+  const ticket=++state.generation;
+  stopTracks();state.starting=true;state.usingDemo=false;
+  text('start','카메라 연결 중…');$('start').disabled=true;
+  state.cameraMessage='카메라 사용 권한을 허용해 주세요.';
+  try{
+    if(!window.isSecureContext || !navigator.mediaDevices?.getUserMedia)throw new Error('InsecureContext');
+    const request=navigator.mediaDevices.getUserMedia({
+      audio:false,video:{facingMode:{ideal:state.front?'user':'environment'},
+      width:{ideal:1280},height:{ideal:960},frameRate:{ideal:24,max:30}}
     });
-    $('scale').oninput = e => { avatarScale = +e.target.value/100; $('scaleText').textContent = e.target.value + '%'; };
-    $('lift').oninput = e => { lift = +e.target.value/100; $('liftText').textContent = e.target.value; };
+    const stream=await timeout(request,30000,'CameraTimeout',
+      late=>late.getTracks().forEach(t=>t.stop()));
+    if(ticket!==state.generation){stream.getTracks().forEach(t=>t.stop());return;}
+    state.stream=stream;video.srcObject=stream;
+    await timeout(video.play(),12000,'VideoTimeout');
+    if(ticket!==state.generation)return;
+    state.started=true;state.cameraMessage='카메라 실행 중 · 영상은 이 기기에서만 처리합니다.';
+    const facing=stream.getVideoTracks()[0]?.getSettings?.().facingMode;
+    if(facing)state.front=facing!=='environment';
+    state.mirror=state.front;$('mirror').checked=state.mirror;
+    $('empty').style.display='none';$('previewWrap').hidden=false;
+    $('stop').disabled=false;$('flip').disabled=false;$('save').disabled=false;
+    text('start','카메라 다시 시작');
+    for(const track of stream.getVideoTracks()){
+      track.addEventListener('ended',()=>{
+        if(state.stream===stream && state.started)stopCamera('카메라 연결이 종료되었습니다. 다시 시작해 주세요.');
+      },{once:true});
+    }
+    void loadModels(); // Never block camera controls/rendering on external module imports.
+  }catch(e){
+    if(ticket===state.generation){stopTracks();state.cameraMessage=cameraError(e);log('camera',e);}
+  }finally{
+    if(ticket===state.generation){state.starting=false;$('start').disabled=false;
+      text('start',state.started?'카메라 다시 시작':'카메라 시작');}
+  }
+}
+function pointOK(p,min=.4){
+  return !!p && Number.isFinite(p.x)&&Number.isFinite(p.y) &&
+    (p.visibility??1)>min && p.x>-.25 && p.x<1.25 && p.y>-.25 && p.y<1.25;
+}
+function bodyOK(){return state.landmarks && [11,12,23,24].every(i=>pointOK(state.landmarks[i],.4));}
+function fitInfo(w,h,W,H,cover=true){
+  const s=cover?Math.max(W/w,H/h):Math.min(W/w,H/h);
+  return {s,ox:(W-w*s)/2,oy:(H-h*s)/2,vw:w,vh:h};
+}
+function mapPoint(p,cam) {
+  const x=p.x*cam.vw*cam.s+cam.ox;
+  return {x:state.mirror?canvas.width-x:x,y:p.y*cam.vh*cam.s+cam.oy};
+}
+function neutralPose(t=0,animate=false) {
+  const cx=360,sy=288,torso=210,shoulderW=180,hipW=127,headR=51;
+  const ls={x:cx-90,y:sy},rs={x:cx+90,y:sy},lh={x:cx-hipW/2,y:sy+torso},rh={x:cx+hipW/2,y:sy+torso};
+  const wave=animate?Math.sin(t*2.0)*32:0;
+  const le={x:ls.x-27,y:sy+106},re={x:rs.x+27+wave*.45,y:sy+106-Math.max(wave,0)};
+  const lw={x:le.x-8,y:le.y+108},rw={x:re.x+8+wave*.5,y:re.y+108-Math.max(wave,0)};
+  const lk={x:lh.x-6,y:lh.y+156},rk={x:rh.x+6,y:rh.y+156};
+  const la={x:lk.x-2,y:lk.y+153},ra={x:rk.x+2,y:rk.y+153};
+  return {head:{x:cx,y:sy-headR*1.2},neck:{x:cx,y:sy-9},ls,rs,lh,rh,le,re,lw,rw,lk,rk,la,ra,
+    shoulderMid:{x:cx,y:sy},hipMid:{x:cx,y:sy+torso},shoulderW,hipW,torso,headR};
+}
+function trackedPose(cam) {
+  const L=state.landmarks,p=i=>mapPoint(L[i],cam);
+  // Anatomical left/right are reordered for the screen, including the corresponding limbs.
+  const order=p(11).x<p(12).x?[11,12,23,24,13,14,15,16,25,26,27,28]:[12,11,24,23,14,13,16,15,26,25,28,27];
+  const [a,b,c,d,e,f,g,h,i,j,k,l]=order;
+  const ls=p(a),rs=p(b),lh=p(c),rh=p(d),shoulderMid=mixPoint(ls,rs,.5),hipMid=mixPoint(lh,rh,.5);
+  const torso=Math.max(80,len(shoulderMid,hipMid)),shoulderW=Math.max(60,len(ls,rs)),headR=shoulderW*.29;
+  const fallback=(index,v)=>pointOK(L[index],.45)?p(index):v;
+  const le=fallback(e,{x:ls.x-shoulderW*.14,y:ls.y+torso*.5});
+  const re=fallback(f,{x:rs.x+shoulderW*.14,y:rs.y+torso*.5});
+  const lw=fallback(g,{x:le.x-8,y:le.y+torso*.5}),rw=fallback(h,{x:re.x+8,y:re.y+torso*.5});
+  const lk=fallback(i,{x:lh.x,y:lh.y+torso*.76}),rk=fallback(j,{x:rh.x,y:rh.y+torso*.76});
+  const la=fallback(k,{x:lk.x,y:lk.y+torso*.74}),ra=fallback(l,{x:rk.x,y:rk.y+torso*.74});
+  return {head:{x:shoulderMid.x,y:shoulderMid.y-headR*1.2},neck:{x:shoulderMid.x,y:shoulderMid.y-headR*.18},
+    ls,rs,lh,rh,le,re,lw,rw,lk,rk,la,ra,shoulderMid,hipMid,shoulderW,hipW:len(lh,rh),torso,headR};
+}
+const POINT_KEYS=['head','neck','ls','rs','lh','rh','le','re','lw','rw','lk','rk','la','ra','shoulderMid','hipMid'];
+function placeAvatar(p) {
+  if($('showCamera').checked && bodyOK()){
+    const q={...p},c=p.hipMid;
+    for(const k of POINT_KEYS)q[k]={x:c.x+(p[k].x-c.x)*state.scale,y:c.y+(p[k].y-c.y)*state.scale};
+    for(const k of ['shoulderW','hipW','torso','headR'])q[k]=p[k]*state.scale;
+    return q;
+  }
+  const pts=POINT_KEYS.map(k=>p[k]),r=p.headR;
+  const left=Math.min(...pts.map(v=>v.x))-r*.65,right=Math.max(...pts.map(v=>v.x))+r*.65;
+  const top=Math.min(...pts.map(v=>v.y))-r*1.45,bottom=Math.max(...pts.map(v=>v.y))+r*.35;
+  const s=Math.min(1.4,canvas.width*.87/(right-left),canvas.height*.85/(bottom-top))*state.scale;
+  const mx=(left+right)/2,cy=(top+bottom)/2;
+  const q={...p};
+  for(const k of POINT_KEYS)q[k]={x:360+(p[k].x-mx)*s,y:490+(p[k].y-cy)*s};
+  for(const k of ['shoulderW','hipW','torso','headR'])q[k]=p[k]*s;
+  return q;
+}
+function roiFromFace(L) {
+  const vw=video.videoWidth,vh=video.videoHeight;
+  if(!L || L.length<455 || !vw || !vh)return null;
+  const raw=i=>({x:L[i].x*vw,y:L[i].y*vh});
+  let A=raw(33),B=raw(263);if(A.x>B.x)[A,B]=[B,A];
+  const angle=Math.atan2(B.y-A.y,B.x-A.x);
+  const origin={x:(A.x+B.x)/2,y:(A.y+B.y)/2},c=Math.cos(angle),s=Math.sin(angle);
+  const local=OVAL.map(i=>{const p=raw(i),dx=p.x-origin.x,dy=p.y-origin.y;return {x:c*dx+s*dy,y:-s*dx+c*dy};});
+  if(local.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))return null;
+  const x0=Math.min(...local.map(p=>p.x)),x1=Math.max(...local.map(p=>p.x));
+  const y0=Math.min(...local.map(p=>p.y)),y1=Math.max(...local.map(p=>p.y));
+  const fw=x1-x0,fh=y1-y0;
+  if(fw<16||fh<20||fw>vw*.92||fh>vh*.94)return null;
+  const midX=(x0+x1)/2,midY=(y0+y1)/2;
+  // Geometric mask only: extra space above the forehead approximates hair, not hair segmentation.
+  const expanded=local.map(p=>{
+    const upper=clamp((midY-p.y)/(fh*.5),0,1);
+    return {x:midX+(p.x-midX)*(1.06+.07*upper),
+      y:p.y-fh*state.hair*Math.pow(upper,1.25)+fh*.015*(1-upper)};
+  });
+  const ex0=Math.min(...expanded.map(p=>p.x)),ex1=Math.max(...expanded.map(p=>p.x));
+  const ey0=Math.min(...expanded.map(p=>p.y)),ey1=Math.max(...expanded.map(p=>p.y));
+  const cx=(ex0+ex1)/2,cy=(ey0+ey1)/2,w=(ex1-ex0)*1.045,h=(ey1-ey0)*1.045;
+  return {cx:origin.x+c*cx-s*cy,cy:origin.y+s*cx+c*cy,w,h,angle,
+    poly:expanded.map(p=>({x:(p.x-cx)/w,y:(p.y-cy)/h})),source:'face'};
+}
+function ellipseROI(cx,cy,w,h,angle,source) {
+  const poly=[];
+  for(let i=0;i<48;i++){
+    const a=i/48*Math.PI*2;
+    poly.push({x:.475*Math.cos(a),y:.475*Math.sin(a)});
+  }
+  return {cx,cy,w,h,angle,poly,source};
+}
+function roiFromPose() {
+  const L=state.landmarks,vw=video.videoWidth,vh=video.videoHeight;
+  if(!L || ![2,5,7,8].every(i=>pointOK(L[i],.65)))return null;
+  const pts=[2,5,7,8].map(i=>({x:L[i].x*vw,y:L[i].y*vh}));
+  let [A,B]=pts;if(A.x>B.x)[A,B]=[B,A];
+  const eyeD=len(A,B),earD=len(pts[2],pts[3]);
+  if(eyeD<7||earD<14)return null;
+  const w=Math.max(earD*1.10,eyeD*2.8);
+  if(w>vw*.7)return null;
+  const angle=Math.atan2(B.y-A.y,B.x-A.x);
+  const h=w*(1.12+state.hair*.6);
+  const c={x:(A.x+B.x)/2,y:(A.y+B.y)/2-h*.05};
+  return ellipseROI(c.x,c.y,w,h,angle,'pose');
+}
+function manualROI() {
+  const vw=video.videoWidth,vh=video.videoHeight;
+  const w=Math.min(vw,vh)*.26*state.manual.size,h=w*1.36;
+  return ellipseROI(state.manual.x*vw,state.manual.y*vh,w,h,0,'manual');
+}
+function updateFaceROI(next) {
+  if(!next){state.faceROI=null;maskKey='';return;}
+  const old=state.faceROI;
+  // Smooth center/size, but follow large movements promptly.
+  if(old && old.source===next.source && Math.hypot(old.cx-next.cx,old.cy-next.cy)<next.w*.45){
+    const k=.72;
+    for(const key of ['cx','cy','w','h'])next[key]=lerp(old[key],next[key],k);
+    const diff=Math.atan2(Math.sin(next.angle-old.angle),Math.cos(next.angle-old.angle));
+    next.angle=old.angle+diff*k;
+  }
+  state.faceROI=next;maskKey='';
+}
+function activeROI(now) {
+  if(!state.started || state.faceMode!=='real' || video.readyState<2)return null;
+  if($('manualFace').checked)return manualROI();
+  if(state.faceROI && now-state.faceSeen<420)return state.faceROI;
+  if(now-state.poseSeen<420)return roiFromPose();
+  return null;
+}
+function sampleFace(roi) {
+  const W=256,H=Math.round(clamp(256*roi.h/roi.w,180,530));
+  if(faceTile.width!==W || faceTile.height!==H){
+    faceTile.width=faceMask.width=W;faceTile.height=faceMask.height=H;maskKey='';
+  }
+  const key=JSON.stringify(roi.poly);
+  if(maskKey!==key){
+    mx.clearRect(0,0,W,H);mx.save();
+    if('filter' in mx)mx.filter='blur(1.3px)';
+    mx.fillStyle='#ffffff';mx.beginPath();
+    const p=roi.poly.map(p=>({x:W*(p.x+.5),y:H*(p.y+.5)}));
+    const start=mixPoint(p[p.length-1],p[0],.5);mx.moveTo(start.x,start.y);
+    for(let i=0;i<p.length;i++){
+      const mid=mixPoint(p[i],p[(i+1)%p.length],.5);
+      mx.quadraticCurveTo(p[i].x,p[i].y,mid.x,mid.y);
+    }
+    mx.closePath();mx.fill();mx.restore();maskKey=key;
+  }
+  tx.clearRect(0,0,W,H);tx.save();
+  tx.translate(W/2,H/2);tx.scale(W/roi.w,H/roi.h);
+  tx.rotate(-roi.angle);tx.translate(-roi.cx,-roi.cy);
+  tx.drawImage(video,0,0);tx.restore();
+  tx.globalCompositeOperation='destination-in';tx.drawImage(faceMask,0,0);
+  tx.globalCompositeOperation='source-over';
+}
+function localNeckColor() {
+  try {
+    const W=faceTile.width,H=faceTile.height,values=[];
+    for(const f of [.30,.70]){
+      const d=tx.getImageData(Math.round(W*f),Math.round(H*.62),3,3).data;
+      for(let i=0;i<d.length;i+=4)if(d[i+3]>220)values.push([d[i],d[i+1],d[i+2]]);
+    }
+    if(values.length){
+      return 'rgb('+[0,1,2].map(k=>Math.round(values.reduce((sum,p)=>sum+p[k],0)/values.length)).join(',')+')';
+    }
+  }catch(_){}
+  return COLORS.skin;
+}
+function drawLiveHead(p,roi) {
+  sampleFace(roi);
+  const w=p.headR*1.87*state.faceSize,h=w*roi.h/roi.w;
+  // Bottom of the photographed chin meets the collar; preserve the source aspect ratio.
+  const y=p.neck.y-h*.43+p.headR*state.faceOffset;
+  const neckColor=localNeckColor();
+  drawSegment({x:p.neck.x,y:p.neck.y-p.headR*.12},
+    {x:p.neck.x,y:p.neck.y+p.headR*.50},p.headR*.17,p.headR*.15,neckColor,neckColor);
+  ctx.save();ctx.translate(p.head.x,y);
+  ctx.rotate((state.mirror?-1:1)*roi.angle);
+  if(state.mirror)ctx.scale(-1,1);
+  ctx.drawImage(faceTile,-w/2,-h/2,w,h);ctx.restore();
+}
+function infer(now) {
+  if(!state.started||video.readyState<2||!video.videoWidth)return;
+  const vt=video.currentTime;
+  const faceDue=state.face && state.faceMode==='real' && !$('manualFace').checked &&
+    now-state.lastFaceDetect>105 && vt!==state.faceVideoTime;
+  const poseDue=state.pose && now-state.lastPoseDetect>180 && vt!==state.poseVideoTime;
+  // Stagger the two synchronous models; never run both in the same render tick.
+  if(faceDue && (!poseDue || state.lastFaceDetect<=state.lastPoseDetect)){
+    state.lastFaceDetect=now;state.faceVideoTime=vt;
+    try{
+      const result=state.face.detectForVideo(video,now);state.stats.faceCalls++;
+      const L=result.faceLandmarks?.[0];
+      if(L){
+        state.facePoints=L;updateFaceROI(roiFromFace(L));
+        if(state.faceROI)state.faceSeen=now;
+      }else{
+        // Do not leave a previous student's face displayed when detection is lost.
+        clearFace();
+      }
+    }catch(e){
+      if(String(e)!==lastFaceError){log('face detect',e);lastFaceError=String(e);}
+      clearFace();
+    }
+  }else if(poseDue){
+    state.lastPoseDetect=now;state.poseVideoTime=vt;
+    try{
+      const result=state.pose.detectForVideo(video,now);state.stats.poseCalls++;
+      state.landmarks=result.landmarks?.[0]||null;
+      if(state.landmarks)state.poseSeen=now;
+    }catch(e){
+      if(String(e)!==lastPoseError){log('pose detect',e);lastPoseError=String(e);}
+      state.landmarks=null;
+    }
+  }
+}
+function background() {
+  const W=canvas.width,H=canvas.height;
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#e8f1f2');g.addColorStop(.7,'#f6f9f8');g.addColorStop(1,'#e2ede8');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(30,88,64,.07)';ctx.lineWidth=1;
+  for(let x=60;x<W;x+=100){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  ctx.fillStyle='rgba(39,98,69,.06)';ctx.fillRect(0,H*.87,W,H*.13);
+}
+function drawCamera(cam) {
+  ctx.save();if(state.mirror){ctx.translate(canvas.width,0);ctx.scale(-1,1);}
+  ctx.drawImage(video,cam.ox,cam.oy,cam.vw*cam.s,cam.vh*cam.s);ctx.restore();
+}
+function renderPreview(roi) {
+  const W=preview.width,H=preview.height,vw=video.videoWidth,vh=video.videoHeight;
+  previewTransform=fitInfo(vw,vh,W,H,false);
+  const f=previewTransform;
+  px.fillStyle='#152f3a';px.fillRect(0,0,W,H);
+  px.save();if(state.mirror){px.translate(W,0);px.scale(-1,1);}
+  px.drawImage(video,f.ox,f.oy,vw*f.s,vh*f.s);
+  if(roi){
+    px.translate(f.ox+roi.cx*f.s,f.oy+roi.cy*f.s);px.rotate(roi.angle);
+    px.strokeStyle=roi.source==='manual'?'#f3cc67':'#58ecc0';px.lineWidth=2;
+    px.beginPath();
+    roi.poly.forEach((p,i)=>{
+      const x=p.x*roi.w*f.s,y=p.y*roi.h*f.s;
+      if(!i)px.moveTo(x,y);else px.lineTo(x,y);
+    });px.closePath();px.stroke();
+  }
+  px.restore();
+}
+function render(now) {
+  state.stats.frames++;background();state.faceRendered=false;
+  let cam=null,roi=null;
+  if(state.started && video.readyState>=2 && video.videoWidth){
+    cam=fitInfo(video.videoWidth,video.videoHeight,canvas.width,canvas.height);
+    if($('showCamera').checked)drawCamera(cam);
+    infer(now);roi=activeROI(now);
+  }
+  const tracking=cam && bodyOK() && now-state.poseSeen<600;
+  const p=placeAvatar(tracking?trackedPose(cam):neutralPose(now/1000,state.usingDemo));
+  drawShadow((p.la.x+p.ra.x)/2,Math.max(p.la.y,p.ra.y)+p.headR*.25,p.headR*2.1,p.headR*.36);
+  drawPelvis(p);drawLeg(p.lh,p.lk,p.la,p.headR);drawLeg(p.rh,p.rk,p.ra,p.headR);
+  drawTorso(p);drawArm('left',p.ls,p.le,p.lw,p.headR);drawArm('right',p.rs,p.re,p.rw,p.headR);
+  if(roi){
+    try{drawLiveHead(p,roi);state.faceRendered=true;state.faceSource=roi.source;}
+    catch(e){log('face render',e);drawCartoonHead(p);state.faceSource='none';}
+  }else{drawCartoonHead(p);state.faceSource='none';}
+  if(cam && now-state.lastPreview>90){renderPreview(roi);state.lastPreview=now;}
+  if(now-state.lastUI>250){updateUI(tracking);state.lastUI=now;}
+  $('empty').style.display=state.started||state.usingDemo?'none':'grid';
+}
+function updateUI(tracking=false) {
+  text('cameraStatus',state.cameraMessage||'카메라는 시작 버튼을 누를 때만 켜집니다.');
+  let fs='';
+  if(state.faceMode==='cartoon')fs='그림 얼굴 모드입니다. 실제 얼굴은 표시하지 않습니다.';
+  else if(!state.started)fs='실제 얼굴은 카메라를 시작한 뒤 표시됩니다.';
+  else if(state.faceRendered){
+    fs=state.faceSource==='manual'?'수동 영역의 실제 영상 표시 중 · 움직이면 영역도 다시 맞춰 주세요.':
+      state.faceSource==='pose'?'자세 정보로 얼굴 영역을 추정 중 · 범위가 다르면 직접 지정해 주세요.':
+      '실제 얼굴 표시 중 · 눈·코·입과 표정을 카메라에서 그대로 가져옵니다.';
+  }else if(state.faceState==='loading')fs='얼굴 인식 준비 중… 준비될 때까지 그림 얼굴을 표시합니다.';
+  else if(state.faceState==='error')fs='얼굴 인식을 불러오지 못했습니다. ‘얼굴 영역 직접 지정’을 사용해 주세요.';
+  else fs='얼굴을 찾지 못했습니다. 정면·밝은 조명에서 촬영하거나 영역을 직접 지정해 주세요.';
+  text('faceStatus',fs);
+  const message=state.started?(tracking?'몸 움직임 추적 중':'기본 전신 자세 · 어깨와 골반이 보이도록 서 주세요.'):
+    state.usingDemo?'시연 동작 · 실제 카메라 영상은 아닙니다.':'카메라 대기 중';
+  text('status',message);$('dot').classList.toggle('on',state.started||state.usingDemo);
+  text('modeBadge',state.started?(state.faceRendered?'실제 얼굴':'카메라 켜짐'):state.usingDemo?'시연 모드':'카메라 꺼짐');
+  if($('diagnostics').open){
+    text('debug',JSON.stringify({
+      version:'REAL FACE v1.0',secure:window.isSecureContext,camera:state.started,
+      video:[video.videoWidth,video.videoHeight],face:state.faceState,body:state.poseState,
+      faceSource:state.faceSource,faceCalls:state.stats.faceCalls,poseCalls:state.stats.poseCalls,
+      recent:state.log
+    },null,2));
+  }
+}
+function loop(now) {
+  state.raf=0;
+  // Cap composition at about 30 fps; face pixels remain live between landmark updates.
+  if(!document.hidden && now-state.lastFrame>=30){
+    state.lastFrame=now;
+    try{render(now);}catch(e){log('render',e);}
+  }
+  state.raf=requestAnimationFrame(loop);
+}
+function tick(){if(!state.raf)state.raf=requestAnimationFrame(loop);}
+// Events are bound before any external library is loaded.
+$('start').onclick=startCamera;
+$('stop').onclick=()=>stopCamera();
+$('flip').onclick=()=>{state.front=!state.front;void startCamera();};
+$('demo').onclick=()=>{
+  stopCamera('시연 모드입니다. 카메라는 꺼져 있습니다.');
+  state.usingDemo=true;$('save').disabled=false;$('empty').style.display='none';
+};
+$('retry').onclick=()=>{if(!state.loading)void loadModels();};
+function faceMode(mode) {
+  state.faceMode=mode;clearFace();
+  for(const [id,m]of [['realMode','real'],['cartoonMode','cartoon']]){
+    $(id).classList.toggle('selected',mode===m);$(id).setAttribute('aria-pressed',String(mode===m));
+  }
+  if(mode==='real'&&state.started)void loadModels();
+}
+$('realMode').onclick=()=>faceMode('real');
+$('cartoonMode').onclick=()=>faceMode('cartoon');
+$('scale').oninput=e=>{state.scale=Number(e.target.value)/100;text('scaleText',e.target.value+'%');};
+$('faceSize').oninput=e=>{state.faceSize=Number(e.target.value)/100;text('faceSizeText',e.target.value+'%');};
+$('faceOffset').oninput=e=>{state.faceOffset=Number(e.target.value)/100;text('faceOffsetText',e.target.value);};
+$('hairMargin').oninput=e=>{
+  state.hair=Number(e.target.value)/100;text('hairText',Number(e.target.value)<15?'좁게':Number(e.target.value)>38?'넓게':'보통');
+  if(state.facePoints)updateFaceROI(roiFromFace(state.facePoints));
+};
+$('mirror').onchange=e=>{state.mirror=e.target.checked;};
+$('manualWidth').oninput=e=>{state.manual.size=Number(e.target.value)/100;text('manualWidthText',e.target.value+'%');};
+$('manualFace').onchange=e=>{
+  $('manualControls').hidden=!e.target.checked;
+  if(e.target.checked && state.faceROI){
+    state.manual.x=state.faceROI.cx/video.videoWidth;
+    state.manual.y=state.faceROI.cy/video.videoHeight;
+    state.manual.size=clamp(state.faceROI.w/(Math.min(video.videoWidth,video.videoHeight)*.26),.45,2.3);
+    $('manualWidth').value=Math.round(state.manual.size*100);
+    text('manualWidthText',$('manualWidth').value+'%');
+  }
+  clearFace();
+};
+function pickFace(e) {
+  if(!$('manualFace').checked||!state.started||!previewTransform)return;
+  const r=preview.getBoundingClientRect(),f=previewTransform;
+  let x=(e.clientX-r.left)/r.width*preview.width;
+  const y=(e.clientY-r.top)/r.height*preview.height;
+  if(state.mirror)x=preview.width-x;
+  state.manual.x=clamp((x-f.ox)/(f.vw*f.s),.02,.98);
+  state.manual.y=clamp((y-f.oy)/(f.vh*f.s),.02,.98);
+}
+let dragging=false;
+preview.addEventListener('pointerdown',e=>{
+  if(!$('manualFace').checked)return;
+  dragging=true;preview.setPointerCapture(e.pointerId);pickFace(e);
+});
+preview.addEventListener('pointermove',e=>{if(dragging)pickFace(e);});
+preview.addEventListener('pointerup',()=>{dragging=false;});
+preview.addEventListener('pointercancel',()=>{dragging=false;});
+$('save').onclick=()=>{
+  text('saveStatus','사진 파일을 준비합니다…');
+  canvas.toBlob(blob=>{
+    if(!blob){text('saveStatus','저장하지 못했습니다. 다시 시도해 주세요.');return;}
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download='hansin-my-face-'+Date.now()+'.png';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+    text('saveStatus','사진 파일을 만들었습니다. 브라우저의 다운로드 목록을 확인해 주세요.');
+  },'image/png');
+};
+// Never retain a live face when leaving the page or switching to another app.
+window.addEventListener('pagehide',()=>stopCamera());
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden && (state.started||state.starting))stopCamera('다른 화면으로 이동하여 카메라를 껐습니다. 다시 시작해 주세요.');
+});
+const COLORS = {
+  navy:'#203152', navy2:'#32466d', green:'#287348', green2:'#3b8a5a', white:'#faf8f1', skin:'#ecc2a5', skin2:'#d9a78a', hair:'#302829', shoe:'#1b2231', line:'rgba(19,37,58,.15)'
+};
 
-    await initScene();
-    avatarScale = 1; $('scaleText').textContent='100%';
-    $('liftText').textContent='0';
-    // small vertical shift by moving target eye/ground would be more complex; use CSS translate on canvas/video.
-    $('lift').addEventListener('input',()=>{
-      const px = (-lift * stage.clientHeight * 0.005);
-      canvas.style.transform = `translateY(${px}px)`;
-      video.style.transform = `${mirror && showCamera ? 'scaleX(-1) ' : ''}translateY(${px}px)`;
-    });
-  </script>
+function hexToRgb(hex){ const n = hex.replace('#',''); return [parseInt(n.slice(0,2),16), parseInt(n.slice(2,4),16), parseInt(n.slice(4,6),16)]; }
+function alpha(hex,a){ const [r,g,b] = hexToRgb(hex); return `rgba(${r},${g},${b},${a})`; }
+function lerp(a,b,t){ return a + (b-a)*t; }
+function mixPoint(a,b,t){ return {x:lerp(a.x,b.x,t), y:lerp(a.y,b.y,t)}; }
+function len(a,b){ return Math.hypot(b.x-a.x,b.y-a.y); }
+function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+function smooth(a,b,t){ return {x:lerp(a.x,b.x,t), y:lerp(a.y,b.y,t)}; }
+function norm(a,b){ const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||1; return {x:dx/d,y:dy/d,d}; }
+function perp(v){ return {x:-v.y, y:v.x}; }
+function drawRoundedPoly(points, fill, stroke=null){
+  if(points.length < 2) return;
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for(let i=1;i<points.length;i++) ctx.lineTo(points[i].x, points[i].y);
+  ctx.closePath();
+  ctx.fillStyle = fill; ctx.fill();
+  if(stroke){ ctx.strokeStyle = stroke; ctx.lineWidth = 1.2; ctx.stroke(); }
+}
+function drawSegment(a,b,w1,w2,c1,c2, bend=0){
+  const v = norm(a,b), n = perp(v);
+  const p1 = {x:a.x+n.x*w1, y:a.y+n.y*w1};
+  const p2 = {x:b.x+n.x*w2, y:b.y+n.y*w2};
+  const p3 = {x:b.x-n.x*w2, y:b.y-n.y*w2};
+  const p4 = {x:a.x-n.x*w1, y:a.y-n.y*w1};
+  const g = ctx.createLinearGradient(p1.x,p1.y,p4.x,p4.y);
+  g.addColorStop(0, c1); g.addColorStop(.55, c2); g.addColorStop(1, c1);
+  drawRoundedPoly([p1,p2,p3,p4], g, alpha('#0b1a27',.08));
+}
+function drawCircle(x,y,r,fill,stroke=null){ ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fillStyle=fill; ctx.fill(); if(stroke){ ctx.strokeStyle=stroke; ctx.lineWidth=1.1; ctx.stroke(); }}
+function drawShadow(x,y,w,h){ const g=ctx.createRadialGradient(x,y,2,x,y,w); g.addColorStop(0,'rgba(30,58,52,.22)'); g.addColorStop(1,'rgba(30,58,52,0)'); ctx.beginPath(); ctx.ellipse(x,y,w,h,0,0,Math.PI*2); ctx.fillStyle=g; ctx.fill(); }
+function drawButton(x,y,r,fill='#c5a148'){ drawCircle(x,y,r,fill,alpha('#6a5313',.25)); drawCircle(x-r*.24,y-r*.22,r*.18,'rgba(255,255,255,.45)'); }
+
+function drawCartoonHead(p){
+  const {headR, head, neck} = p;
+  drawSegment(neck, {x:neck.x, y:neck.y+headR*.54}, headR*.17, headR*.15, COLORS.skin2, COLORS.skin);
+  ctx.save(); ctx.translate(head.x, head.y); ctx.scale(1,.98);
+  const faceGrad = ctx.createRadialGradient(-headR*.2,-headR*.25, headR*.15, 0,0, headR*1.2); faceGrad.addColorStop(0, '#f5d8c4'); faceGrad.addColorStop(.8, COLORS.skin); faceGrad.addColorStop(1, '#d59d82');
+  drawCircle(0,0,headR,faceGrad,alpha('#935d48',.10));
+  // hair
+  ctx.beginPath();
+  ctx.moveTo(-headR*.95,-headR*.05); ctx.quadraticCurveTo(-headR*.65,-headR*1.08,0,-headR*1.02); ctx.quadraticCurveTo(headR*.95,-headR*1.02,headR*.98,-headR*.02); ctx.lineTo(headR*.68,-headR*.48); ctx.quadraticCurveTo(0,-headR*.73,-headR*.67,-headR*.44); ctx.closePath();
+  ctx.fillStyle = COLORS.hair; ctx.fill();
+  // ears
+  drawCircle(-headR*.9, headR*.02, headR*.14, COLORS.skin); drawCircle(headR*.9, headR*.02, headR*.14, COLORS.skin);
+  // eyes
+  drawCircle(-headR*.3, -headR*.08, headR*.08, '#26303a'); drawCircle(headR*.3, -headR*.08, headR*.08, '#26303a');
+  drawCircle(-headR*.28, -headR*.10, headR*.02, '#fff'); drawCircle(headR*.32, -headR*.10, headR*.02, '#fff');
+  // blush and smile
+  ctx.fillStyle = 'rgba(237,150,135,.33)'; ctx.beginPath(); ctx.ellipse(-headR*.48, headR*.18, headR*.12, headR*.07, 0, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(headR*.48, headR*.18, headR*.12, headR*.07, 0, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#915648'; ctx.lineWidth = Math.max(1.2, headR*.055); ctx.lineCap='round'; ctx.beginPath(); ctx.arc(0, headR*.18, headR*.24, .20, Math.PI-.20); ctx.stroke();
+  ctx.restore();
+}
+
+function drawPelvis(p) {
+  const H=p.hipMid, u=p.shoulderW, t=p.torso;
+  const lo=mixPoint(p.ls,p.lh,.86),ro=mixPoint(p.rs,p.rh,.86);
+  const bottomLeft={x:p.lh.x-u*.115,y:p.lh.y+t*.15};
+  const bottomRight={x:p.rh.x+u*.115,y:p.rh.y+t*.15};
+  const g=ctx.createLinearGradient(lo.x,0,ro.x,0);
+  g.addColorStop(0,COLORS.navy2);g.addColorStop(.5,COLORS.navy);g.addColorStop(1,COLORS.navy2);
+  drawRoundedPoly([lo,ro,bottomRight,bottomLeft],g);
+}
+function drawTorso(p) {
+  const S=p.shoulderMid,H=p.hipMid,u=p.shoulderW,t=p.torso;
+  const v=norm(S,H),right={x:v.y,y:-v.x};
+  const at=(x,y)=>({x:S.x+right.x*x*u+v.x*y*t,y:S.y+right.y*x*u+v.y*y*t});
+  const low=clamp(p.hipW/u*.64,.33,.43);
+  const pts=[at(-.49,.02),at(-.17,-.018),at(.17,-.018),at(.49,.02),at(low,1.07),at(-low,1.07)];
+  const g=ctx.createLinearGradient(p.ls.x,p.ls.y,p.rs.x,p.rs.y);
+  g.addColorStop(0,COLORS.navy2);g.addColorStop(.52,COLORS.navy);g.addColorStop(1,COLORS.navy2);
+  drawRoundedPoly(pts,g,alpha('#0b1a27',.12));
+  // White shirt and collar visible inside the green V-neck jacket.
+  drawRoundedPoly([at(-.16,.002),at(.16,.002),at(0,.36)],COLORS.white);
+  drawRoundedPoly([at(-.16,.002),at(-.025,.035),at(-.08,.14)],'#e6e9e4');
+  drawRoundedPoly([at(.16,.002),at(.025,.035),at(.08,.14)],'#ffffff');
+  const stroke=(pairs,color,width)=>{
+    ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineJoin='round';ctx.lineCap='round';
+    ctx.beginPath();pairs.forEach(([x,y],i)=>{const p=at(x,y);if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);});ctx.stroke();
+  };
+  stroke([[-.17,0],[0,.36],[.17,0]],COLORS.green,u*.026);
+  stroke([[0,.36],[0,1.07]],COLORS.green,u*.024);
+  stroke([[-low,1.055],[0,1.07],[low,1.055]],COLORS.green,u*.026);
+  for(const side of [-1,1]){
+    const c=side*.235,w=.087;
+    drawRoundedPoly([at(c-w,.69),at(c+w,.69),at(c+w,.87),at(c-w,.87)],'#263858',alpha('#7e8b9d',.32));
+    stroke([[c-w,.69],[c+w,.69]],COLORS.green,u*.02);
+  }
+  for(const y of [.48,.79]){const p=at(.028,y);drawButton(p.x,p.y,u*.022);}
+  const pocket=at(.255,.23);
+  stroke([[.177,.215],[.329,.215]],COLORS.green,u*.019);
+  if(badgeImg.complete && badgeImg.naturalWidth>0){
+    ctx.save();ctx.translate(pocket.x,pocket.y);ctx.rotate(Math.atan2(v.y,v.x)-Math.PI/2);
+    ctx.drawImage(badgeImg,-u*.06,0,u*.12,u*.12);ctx.restore();
+  }
+}
+function drawArm(side, shoulder, elbow, wrist, headR){
+  drawSegment(shoulder, elbow, headR*.43, headR*.33, COLORS.navy2, COLORS.navy);
+  drawCircle(elbow.x, elbow.y, headR*.315, COLORS.navy);
+  drawSegment(elbow, wrist, headR*.33, headR*.22, COLORS.navy2, COLORS.navy);
+  const v = norm(elbow,wrist);
+  const cuff = {x:wrist.x-v.x*headR*.10, y:wrist.y-v.y*headR*.10};
+  drawSegment(cuff, wrist, headR*.24, headR*.20, COLORS.white, COLORS.white);
+  drawCircle(wrist.x, wrist.y, headR*.16, COLORS.skin, alpha('#935d48',.10));
+}
+function drawLeg(hip, knee, ankle, headR){
+  drawSegment(hip, knee, headR*.51, headR*.37, COLORS.navy2, COLORS.navy);
+  drawCircle(knee.x, knee.y, headR*.36, COLORS.navy);
+  drawSegment(knee, ankle, headR*.37, headR*.28, COLORS.navy2, COLORS.navy);
+  const sockTop = mixPoint(knee, ankle, .88);
+  drawSegment(sockTop, ankle, headR*.19, headR*.17, COLORS.white, COLORS.white);
+  // shoe
+  const dir = norm(knee, ankle); const foot = {x:ankle.x+dir.x*headR*.08, y:ankle.y+dir.y*headR*.05};
+  const toe = {x:foot.x + (dir.x*headR*.22 + headR*.18), y:foot.y + dir.y*headR*.02};
+  drawRoundedPoly([
+    {x:foot.x-headR*.18,y:foot.y-headR*.06},{x:toe.x,y:toe.y-headR*.02},{x:toe.x+headR*.02,y:toe.y+headR*.07},{x:foot.x-headR*.16,y:foot.y+headR*.08}
+  ], COLORS.shoe, alpha('#000000',.12));
+  ctx.fillStyle='rgba(255,255,255,.65)'; ctx.fillRect(foot.x-headR*.05, foot.y+headR*.03, headR*.16, headR*.02);
+}
+
+tick();
+})();
+
+</script>
 </body>
 </html>
