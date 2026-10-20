@@ -1,23 +1,424 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#102c43"><title>한신초등학교 | 실시간 교복 체험</title><style>
 :root{font-family:system-ui,-apple-system,'Malgun Gothic',sans-serif;color:#183147;background:#f2f6f7}*{box-sizing:border-box}body{margin:0}.shell{max-width:980px;margin:auto;padding:22px 18px 50px}header{display:flex;align-items:center;gap:13px;margin-bottom:20px}.seal{height:45px;width:45px;background:#0b6248;color:#fff;display:grid;place-items:center;border-radius:50%;font-weight:800;border:4px double #fff;box-shadow:0 0 0 2px #0b6248}.eyebrow{color:#397564;font-size:11px;letter-spacing:2px;font-weight:800}h1{font-size:23px;margin:3px 0 0;letter-spacing:-.8px}.intro{margin:0 0 18px;color:#536777;font-size:14px;line-height:1.65}.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(290px,.7fr);gap:18px}.card{background:white;border:1px solid #e2e9ec;border-radius:20px;box-shadow:0 6px 30px #1b37440c;overflow:hidden}.viewer{padding:14px}.stage{background:#dce8e8;position:relative;border-radius:15px;overflow:hidden;aspect-ratio:3/4;max-height:70vh;display:flex;justify-content:center;align-items:center}.stage canvas{display:block;width:100%;height:100%;object-fit:contain}.empty{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:22px;pointer-events:none}.empty .big{font-size:52px}.empty p{color:#667985;font-size:13px;line-height:1.6}.status{display:flex;gap:7px;align-items:center;padding:12px 3px 2px;color:#607482;font-size:12px}.dot{height:8px;width:8px;border-radius:50%;background:#d69d47;flex-shrink:0}.dot.on{background:#159568}.controls{padding:20px}h2{font-size:17px;margin:0 0 13px}.field{margin-bottom:19px}.fieldlabel{display:block;font-weight:750;font-size:13px;margin-bottom:10px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.tab{background:#f3f7f8;border:1px solid #dce5e9;border-radius:12px;padding:13px 4px;cursor:pointer;color:#4b6572;font-weight:700;font-size:12px}.tab.active{background:#e6f4ed;border:2px solid #178061;color:#0b674e;padding:12px 3px}.switch{display:grid;grid-template-columns:1fr 1fr;gap:7px}.switch button{padding:11px;background:#f3f7f8;border:1px solid #dce5e9;border-radius:10px;font-weight:750;color:#58707d;cursor:pointer}.switch button.active{background:#133d53;color:#fff;border-color:#133d53}.preview{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #e3eaed;border-radius:13px;background:#fafcfc}.preview img{width:55px;height:70px;object-fit:contain;background:#eaf0f1;border-radius:8px}.preview span{font-size:12px;color:#58717e;line-height:1.55}.btn{width:100%;padding:13px 16px;border-radius:12px;border:0;font-weight:800;font-size:14px;cursor:pointer}.primary{background:#0c654c;color:white}.secondary{background:#e8f0f3;color:#234a5e}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.btn:disabled{opacity:.45;cursor:not-allowed}.range{width:100%;accent-color:#0c654c}.rangeinfo{display:flex;justify-content:space-between;color:#657984;font-size:12px;margin:7px 0}.notice{font-size:12px;line-height:1.65;color:#5d7480;margin-top:15px}.footer{font-size:11px;color:#80909b;text-align:center;margin-top:18px}video{display:none} @media(max-width:720px){.layout{grid-template-columns:1fr}.shell{padding:15px 12px 40px}h1{font-size:21px}.stage{max-height:65vh}.controls{padding:18px}}
-</style></head><body><main class="shell"><header><div class="seal">한신</div><div><div class="eyebrow">HANSIN ELEMENTARY SCHOOL</div><h1>실시간 교복 체험</h1></div></header><p class="intro">카메라 앞에 서서 교복을 골라 보세요. 얼굴은 그대로, 교복은 움직임에 맞춰 화면에 나타납니다. AI 서버 전송 없이 무료로 작동합니다.</p><div class="layout"><section class="card viewer"><div class="stage" id="stage"><canvas id="canvas" width="720" height="960"></canvas><div class="empty" id="empty"><div class="big">📷</div><strong>카메라를 시작해 주세요</strong><p>스마트폰 또는 노트북 카메라를 사용합니다.<br>가능하면 전신이 보이게 서 주세요.</p></div></div><div class="status"><i class="dot" id="dot"></i><span id="status">카메라 대기 중 · HTTPS 접속이 필요합니다.</span></div></section><section class="card controls"><h2>교복 선택</h2><div class="field"><span class="fieldlabel">종류</span><div class="tabs" id="tabs"><button class="tab active" data-season="spring">🌿<br>춘추복</button><button class="tab" data-season="winter">❄️<br>동복</button><button class="tab" data-season="summer">☀️<br>하복</button><button class="tab" data-season="sports">🏃<br>체육복</button></div></div><div class="field"><span class="fieldlabel">하의 형태</span><div class="switch" id="bottoms"><button class="active" data-bottom="pants">바지형</button><button data-bottom="skirt">치마형</button></div></div><div class="field"><span class="fieldlabel">교복 미리보기</span><div class="preview"><img id="topPreview" src="assets/blazer.png" alt="상의 도안"><img id="bottomPreview" src="assets/trousers.png" alt="하의 도안"><span id="outfitDesc">춘추복 · 바지형<br>2027 교복 디자인 사양서 기준</span></div></div><div class="field"><div class="rangeinfo"><span>교복 크기 미세 조절</span><span id="scaleText">100%</span></div><input id="scale" class="range" type="range" min="70" max="145" value="100" aria-label="교복 크기"></div><button id="start" class="btn primary">📷 카메라 시작</button><div class="actions"><button id="flip" class="btn secondary" disabled>카메라 전환</button><button id="save" class="btn secondary" disabled>📸 사진 저장</button></div><p class="notice">• 어깨와 골반 위치를 추적해 교복 이미지를 자동 배치합니다.<br>• 팔·다리를 실제 천처럼 변형하지 않는 <strong>AR 겹쳐보기</strong>입니다.<br>• 체육복의 치마형은 PDF에 없어 반바지형으로 표시됩니다.<br>• 촬영 영상은 기기 안에서만 처리하며 서버로 전송하지 않습니다.</p></section></div><p class="footer">한신초등학교 2027 교복 디자인 사양서의 도안 활용 · 무료 시제품</p></main><video id="video" autoplay playsinline muted></video><script type="module">
-import {PoseLandmarker,FilesetResolver} from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/+esm';
-const $=id=>document.getElementById(id);const video=$('video'),canvas=$('canvas'),ctx=canvas.getContext('2d');let season='spring',bottom='pants',scale=1,stream=null,pose=null,lastDetect=0,landmarks=null,mirror=true,front=true,started=false;
-const garments={spring:{top:'blazer',pants:'trousers',skirt:'skirt'},winter:{top:'hoodie',pants:'trousers',skirt:'skirt'},summer:{top:'summer_shirt',pants:'shorts',skirt:'skort'},sports:{top:'sports_jacket',pants:'sports_pants',skirt:'sports_pants'}};
-const images={};for(const name of ['blazer','trousers','skirt','hoodie','summer_shirt','summer_blouse','shorts','skort','sports_jacket','sports_pants','sports_top','sports_shorts']){const im=new Image();im.src=`assets/${name}.png`;images[name]=im;}
-function selection(){const g=garments[season];return [g.top,g[bottom]]}function refresh(){const [a,b]=selection();$('topPreview').src=images[a].src;$('bottomPreview').src=images[b].src;$('outfitDesc').innerHTML=`${{spring:'춘추복',winter:'동복',summer:'하복',sports:'체육복'}[season]} · ${bottom==='pants'?'바지형':'치마형'}<br>2027 교복 디자인 사양서 기준`;}document.querySelectorAll('[data-season]').forEach(b=>b.onclick=()=>{season=b.dataset.season;document.querySelectorAll('[data-season]').forEach(x=>x.classList.toggle('active',x===b));refresh()});document.querySelectorAll('[data-bottom]').forEach(b=>b.onclick=()=>{bottom=b.dataset.bottom;document.querySelectorAll('[data-bottom]').forEach(x=>x.classList.toggle('active',x===b));refresh()});$('scale').oninput=e=>{scale=+e.target.value/100;$('scaleText').textContent=e.target.value+'%'};
-function status(s,ok=false){$('status').textContent=s;$('dot').classList.toggle('on',ok)}
-async function loadPose(){if(pose)return;status('자세 인식 모델 불러오는 중…');const vision=await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm');pose=await PoseLandmarker.createFromOptions(vision,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task',delegate:'CPU'},runningMode:'VIDEO',numPoses:1,minPoseDetectionConfidence:.4,minTrackingConfidence:.4});}
-async function startCamera(){try{if(stream)stream.getTracks().forEach(t=>t.stop());stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:front?'user':'environment',width:{ideal:960},height:{ideal:1280}}});video.srcObject=stream;await video.play();mirror=front;$('empty').style.display='none';$('start').textContent='카메라 다시 시작';$('flip').disabled=false;$('save').disabled=false;started=true;status('카메라 실행 중 · 자세 인식 준비 중',true);if(!pose){try{await loadPose()}catch(e){console.error(e);status('카메라 실행 중 · 자세 인식 불가, 기본 위치로 표시',true)}}requestAnimationFrame(render)}catch(e){console.error(e);status('카메라를 열 수 없습니다. HTTPS 및 카메라 권한을 확인하세요.')}}$('start').onclick=startCamera;$('flip').onclick=()=>{front=!front;landmarks=null;startCamera()};
-function pt(l,i,W,H){return {x:(mirror?1-l[i].x:l[i].x)*W,y:l[i].y*H,vis:l[i].visibility??1}}function drawImage(name,x,y,w,h){const im=images[name];if(im?.complete&&im.naturalWidth){ctx.drawImage(im,x,y,w,h)}}
-function render(now){if(!started||!stream)return;const W=canvas.width,H=canvas.height;ctx.clearRect(0,0,W,H);if(video.readyState>=2){const vw=video.videoWidth,vh=video.videoHeight;const s=Math.max(W/vw,H/vh),dw=vw*s,dh=vh*s,ox=(W-dw)/2,oy=(H-dh)/2;ctx.save();if(mirror){ctx.translate(W,0);ctx.scale(-1,1)}ctx.drawImage(video,ox,oy,dw,dh);ctx.restore();if(pose&&now-lastDetect>90){lastDetect=now;try{const result=pose.detectForVideo(video,now);landmarks=result.landmarks?.[0]||null}catch(e){console.warn(e)}}
-const [top,bottomImg]=selection();let sx,sy,sw,sh,bx,by,bw,bh;const transformPoint=(i)=>{const l=landmarks[i];const px=l.x*vw*s+ox;return {x:mirror?W-px:px,y:l.y*vh*s+oy,vis:l.visibility??1}};
-// Canvas image is mirrored, while pose coordinates are mapped to the same mirrored view.
-if(landmarks&&[11,12,23,24].every(i=>(landmarks[i].visibility??1)>.3)){
- const L=transformPoint(11),R=transformPoint(12),HL=transformPoint(23),HR=transformPoint(24);const shoulder=Math.abs(L.x-R.x),hipY=(HL.y+HR.y)/2,shoulderY=(L.y+R.y)/2,midX=(L.x+R.x+HL.x+HR.x)/4,torso=Math.max(90,hipY-shoulderY);sw=Math.max(120,shoulder*1.58)*scale;sh=torso*1.48*scale;sx=midX-sw/2;sy=shoulderY-torso*.24;let legLen=torso*1.45;const ankles=[27,28].filter(i=>(landmarks[i].visibility??0)>.3);if(ankles.length){legLen=Math.max(torso*.8,ankles.map(i=>transformPoint(i).y).reduce((a,b)=>a+b,0)/ankles.length-hipY)}bw=Math.max(sw*.83,Math.abs(HL.x-HR.x)*1.7)*scale;bh=legLen*(bottom==='skirt'&&season!=='sports'?.70:1.04)*scale;bx=midX-bw/2;by=hipY-torso*.08;status('사람 인식 중 · 교복을 실시간으로 표시합니다',true)
-}else{sw=W*.54*scale;sh=H*.32*scale;sx=(W-sw)/2;sy=H*.25;bw=W*.46*scale;bh=H*.34*scale;bx=(W-bw)/2;by=H*.53;status(pose?'전신이 보이도록 카메라 앞에 서 주세요 · 임시 위치 표시':'카메라 실행 중 · 기본 위치로 표시',true)}
-// Lower garment first, then upper garment so waistband is visually covered.
-drawImage(bottomImg,bx,by,bw,bh);drawImage(top,sx,sy,sw,sh);
-}requestAnimationFrame(render)}
-$('save').onclick=()=>{if(!started)return;canvas.toBlob(blob=>{if(!blob)return;const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='hansin-uniform-ar.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),5000)},'image/png')};
-</script></body></html>
+
+[hidden]{display:none!important}
+#video{display:block;position:fixed;bottom:0;left:0;width:2px;height:2px;opacity:.01;pointer-events:none;z-index:-1}
+.status{line-height:1.6;align-items:flex-start}.stage{max-height:none}.stage canvas{touch-action:none}
+.feedback{padding:12px 14px;margin:10px 0 0;border-radius:12px;background:#fff3e4;color:#79450c;font-size:13px;line-height:1.7;white-space:pre-line;overflow-wrap:anywhere}
+.feedback.error{background:#fff0f1;color:#912d39}
+.diagnostics{margin-top:12px;font-size:12px;color:#586f7c;line-height:1.6}.diagnostics summary{cursor:pointer;padding:8px 0}.diagnostics pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f7;padding:10px;border-radius:10px;font-size:11px;max-height:220px;overflow:auto}
+.build-label{display:inline-block;font-size:11px;color:#09604a;background:#e0f1e9;border-radius:20px;padding:4px 9px;margin-top:7px}.extra-actions{margin-top:8px}.check{display:flex;gap:9px;align-items:center;font-size:13px;margin:13px 0}.check input{accent-color:#0c654c;width:18px;height:18px}.notice{overflow-wrap:anywhere}.tiny{font-size:12px}.btn{min-height:44px}.btn:focus-visible,.tab:focus-visible{outline:3px solid #db9a35;outline-offset:3px}
+@media(max-width:720px){.stage{max-height:none}.viewer{padding:10px}.shell{padding-top:12px}}
+</style></head><body><main class="shell"><header><div class="seal">한신</div><div><div class="eyebrow">HANSIN ELEMENTARY SCHOOL</div><div class="build-label">CAMERA FIX v2.1</div><h1>실시간 교복 체험</h1></div></header><p class="intro">카메라 앞에 서서 교복을 골라 보세요. 얼굴은 그대로, 교복은 움직임에 맞춰 화면에 나타납니다. 영상은 기기에서 처리합니다. 자동 인식 프로그램을 받으려면 인터넷이 필요합니다.</p><div class="layout"><section class="card viewer"><div class="stage" id="stage"><canvas id="canvas" width="720" height="960"></canvas><div class="empty" id="empty"><div class="big">📷</div><strong>카메라를 시작해 주세요</strong><p>스마트폰 또는 노트북 카메라를 사용합니다.<br>가능하면 전신이 보이게 서 주세요.</p></div></div><div class="status"><i class="dot" id="dot"></i><span id="status">카메라 대기 중 · HTTPS 접속이 필요합니다.</span></div><div class="status" role="status"><span id="poseStatus">자동 위치 인식: 준비 전</span></div>
+<div id="cameraError" class="feedback error" role="alert" hidden></div>
+<div id="modelWarning" class="feedback" role="status" hidden></div>
+<div id="assetWarning" class="feedback" role="status" hidden></div>
+<details class="diagnostics"><summary>오류 진단 정보 보기</summary><p>영상·사진은 진단 정보에 포함되지 않습니다.</p><pre id="diagnostics"></pre><button type="button" id="copyDiagnostics" class="btn secondary">진단 정보 복사</button></details>
+</section><section class="card controls"><h2>교복 선택</h2><div class="field"><span class="fieldlabel">종류</span><div class="tabs" id="tabs"><button class="tab active" data-season="spring">🌿<br>춘추복</button><button class="tab" data-season="winter">❄️<br>동복</button><button class="tab" data-season="summer">☀️<br>하복</button><button class="tab" data-season="sports">🏃<br>체육복</button></div></div><div class="field"><span class="fieldlabel">하의 형태</span><div class="switch" id="bottoms"><button class="active" data-bottom="pants">바지형</button><button data-bottom="skirt">치마형</button></div></div><div class="field"><span class="fieldlabel">교복 미리보기</span><div class="preview"><img id="topPreview" src="assets/blazer.png" alt="상의 도안"><img id="bottomPreview" src="assets/trousers.png" alt="하의 도안"><span id="outfitDesc">춘추복 · 바지형<br>2027 교복 디자인 사양서 기준</span></div></div><div class="field"><div class="rangeinfo"><span>교복 크기 미세 조절</span><span id="scaleText">100%</span></div><input id="scale" class="range" type="range" min="70" max="145" value="100" aria-label="교복 크기"></div><label class="check"><input type="checkbox" id="autoTrack" checked>자동 위치 인식 사용</label>
+<p class="notice">인식이 안 되면 위 옵션을 끄고 교복을 손가락으로 옮길 수 있습니다.</p><button id="start" class="btn primary">📷 카메라 시작</button><div class="actions"><button id="flip" class="btn secondary" disabled>카메라 전환</button><button id="save" class="btn secondary" disabled>📸 사진 저장</button></div><div class="actions extra-actions"><button type="button" id="cameraOnly" class="btn secondary">카메라만 테스트</button><button type="button" id="stop" class="btn secondary" disabled>카메라 끄기</button></div>
+<button type="button" id="retryPose" class="btn secondary extra-actions" disabled>자동 인식 다시 불러오기</button>
+<p class="notice" id="saveNotice" role="status"></p><p class="notice">• 어깨와 골반 위치를 추적해 교복 이미지를 자동 배치합니다.<br>• 팔·다리를 실제 천처럼 변형하지 않는 <strong>AR 겹쳐보기</strong>입니다.<br>• 체육복은 PDF에 치마 도안이 없어 바지형으로 표시합니다.<br>• 촬영 영상은 기기 안에서만 처리하며 서버로 전송하지 않습니다.</p></section></div><p class="footer">한신초등학교 2027 교복 디자인 사양서의 도안 활용 · 무료 시제품</p></main><video id="video" autoplay playsinline webkit-playsinline muted aria-hidden="true"></video><script>
+const MSG = {"ready": "\uce74\uba54\ub77c \uc2dc\uc791\uc744 \ub204\ub974\uba74 \uce74\uba54\ub77c \uad8c\ud55c\uc744 \uc694\uccad\ud569\ub2c8\ub2e4.", "waiting": "\uce74\uba54\ub77c \uad8c\ud55c \uc694\uccad \uc911\u2026 \ube0c\ub77c\uc6b0\uc800\uc758 \ud5c8\uc6a9 \ubc84\ud2bc\uc744 \ub20c\ub7ec \uc8fc\uc138\uc694.", "waitingLong": "\uce74\uba54\ub77c \uad8c\ud55c \uc751\ub2f5\uc744 \uae30\ub2e4\ub9ac\uace0 \uc788\uc2b5\ub2c8\ub2e4. \uc8fc\uc18c\ucc3d\uc758 \uad8c\ud55c \uc54c\ub9bc\uc744 \ud655\uc778\ud574 \uc8fc\uc138\uc694.", "live": "\uce74\uba54\ub77c \uc2e4\ud589 \uc911", "busy": "\uce74\uba54\ub77c \uc5f0\uacb0 \uc911\u2026", "start": "\uce74\uba54\ub77c \uc2dc\uc791", "restart": "\uce74\uba54\ub77c \ub2e4\uc2dc \uc2dc\uc791", "stopped": "\uce74\uba54\ub77c\ub97c \uaecc\uc2b5\ub2c8\ub2e4. \ub2e4\uc2dc \uc2dc\uc791\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.", "cameraFail": "\uce74\uba54\ub77c\ub97c \uc5f4\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. \uc544\ub798 \uc548\ub0b4\ub97c \ud655\uc778\ud574 \uc8fc\uc138\uc694.", "secure": "HTTPS \uc6f9\uc8fc\uc18c\ub85c \uc5f4\uc5b4 \uc8fc\uc138\uc694. GitHub Pages \uc8fc\uc18c\ub97c Chrome \uc8fc\uc18c\ucc3d\uc5d0 \uc9c1\uc811 \ub123\uc5b4 \uc811\uc18d\ud574 \uc8fc\uc138\uc694.", "unsupported": "\uc774 \ube0c\ub77c\uc6b0\uc800\uc5d0\uc11c \uce74\uba54\ub77c \uae30\ub2a5\uc744 \uc0ac\uc6a9\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4. \ucd5c\uc2e0 Chrome\uc5d0\uc11c \uc9c1\uc811 \uc5f4\uc5b4 \uc8fc\uc138\uc694.", "denied": "\uce74\uba54\ub77c \uad8c\ud55c\uc774 \ucc28\ub2e8\ub418\uc5c8\uc2b5\ub2c8\ub2e4. Chrome \uc124\uc815 > \uc0ac\uc774\ud2b8 \uc124\uc815 > \uce74\uba54\ub77c\uc5d0\uc11c \uc774 \uc0ac\uc774\ud2b8\ub97c \ud5c8\uc6a9\ud574 \uc8fc\uc138\uc694. \ud734\ub300\uc804\ud654 \uc124\uc815\uc5d0\uc11c Chrome \uc571\uc758 \uce74\uba54\ub77c \uad8c\ud55c\ub3c4 \ud655\uc778\ud574 \uc8fc\uc138\uc694.", "notfound": "\uc0ac\uc6a9 \uac00\ub2a5\ud55c \uce74\uba54\ub77c\ub97c \ucc3e\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. \uae30\uae30\uc758 \uce74\uba54\ub77c \uc5f0\uacb0\uc744 \ud655\uc778\ud574 \uc8fc\uc138\uc694.", "unreadable": "\uce74\uba54\ub77c\ub97c \uc0ac\uc6a9\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4. \ub2e4\ub978 \uce74\uba54\ub77c\u00b7\ud654\uc0c1\ud68c\uc758 \uc571\uc744 \ub2eb\uace0 \ub2e4\uc2dc \uc2dc\ub3c4\ud574 \uc8fc\uc138\uc694.", "permissionTimeout": "\uad8c\ud55c \uc694\uccad \ub300\uae30 \uc2dc\uac04\uc744 \ucd08\uacfc\ud588\uc2b5\ub2c8\ub2e4. \uad8c\ud55c\uc744 \ud5c8\uc6a9\ud55c \ub2e4\uc74c \ub2e4\uc2dc \uc2dc\uc791\ud574 \uc8fc\uc138\uc694.", "videoTimeout": "\uce74\uba54\ub77c \uc601\uc0c1\uc774 \ub3c4\ucc29\ud558\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4. \ub2e4\ub978 \uc571\uc744 \ub2eb\uace0 \ub2e4\uc2dc \uc2dc\uc791\ud574 \uc8fc\uc138\uc694.", "generic": "\uc9c4\ub2e8 \uc815\ubcf4\uc758 \uc624\ub958\uba85\uc744 \ud655\uc778\ud574 \uc8fc\uc138\uc694.", "poseIdle": "\uc790\ub3d9 \uc778\uc2dd: \uce74\uba54\ub77c\ub97c \uc2dc\uc791\ud55c \ub2e4\uc74c \uc900\ube44\ud569\ub2c8\ub2e4.", "poseLoading": "\uc790\ub3d9 \uc778\uc2dd \ud504\ub85c\uadf8\ub7a8 \ubd88\ub7ec\uc624\ub294 \uc911\u2026 \uce74\uba54\ub77c\ub294 \uacc4\uc18d \uc791\ub3d9\ud569\ub2c8\ub2e4.", "poseModel": "\uc790\uc138 \uc778\uc2dd \ubaa8\ub378 \ubc1b\ub294 \uc911\u2026", "poseInit": "\uc790\ub3d9 \uc778\uc2dd \ucd08\uae30\ud654 \uc911\u2026", "poseDetected": "\uc0ac\ub78c \uc778\uc2dd \uc911 \u00b7 \uad50\ubcf5\uc774 \uc704\uce58\ub97c \ub530\ub77c\uac11\ub2c8\ub2e4.", "poseSearching": "\uc5b4\uae68\uc640 \uace8\ubc18, \ubc1c\ubaa9\uc774 \ubcf4\uc774\ub3c4\ub85d \uc11c \uc8fc\uc138\uc694. \uc9c0\uae08\uc740 \uc784\uc2dc \uc704\uce58\ub85c \ud45c\uc2dc\ud569\ub2c8\ub2e4.", "poseFail": "\uc790\ub3d9 \uc778\uc2dd\uc744 \ubd88\ub7ec\uc624\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. \uce74\uba54\ub77c\ub294 \uc0ac\uc6a9 \uac00\ub2a5\ud569\ub2c8\ub2e4. \uad50\ubcf5\uc744 \uc190\uac00\ub77d\uc73c\ub85c \uc62e\uae30\uac70\ub098 \uc790\ub3d9 \uc778\uc2dd \ub2e4\uc2dc \ubd88\ub7ec\uc624\uae30\ub97c \ub20c\ub7ec \uc8fc\uc138\uc694.", "poseInferFail": "\uc790\ub3d9 \uc778\uc2dd\uc744 \uc911\ub2e8\ud588\uc2b5\ub2c8\ub2e4. \uce74\uba54\ub77c\uc640 \uc218\ub3d9 \uc704\uce58 \uc870\uc808\uc740 \uacc4\uc18d \uc0ac\uc6a9 \uac00\ub2a5\ud569\ub2c8\ub2e4.", "manual": "\uc218\ub3d9 \uc704\uce58 \ubaa8\ub4dc \u00b7 \uad50\ubcf5\uc744 \ub04c\uc5b4\uc11c \uc62e\uaca8 \ubcf4\uc138\uc694.", "cameraOnly": "\uce74\uba54\ub77c\ub9cc \ud14c\uc2a4\ud2b8 \uc911 \u00b7 \uad50\ubcf5 \ud45c\uc2dc\ub294 \uce74\uba54\ub77c \ub2e4\uc2dc \uc2dc\uc791\uc744 \ub20c\ub7ec \uc8fc\uc138\uc694.", "missingAssets": "\uad50\ubcf5 \uc774\ubbf8\uc9c0\ub97c \uc77d\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. index.html\uacfc \uac19\uc740 \uc704\uce58\uc5d0 assets \ud3f4\ub354\ub97c \uc62c\ub824 \uc8fc\uc138\uc694. ", "saveOk": "\uc0ac\uc9c4 \uc800\uc7a5\uc744 \uc694\uccad\ud588\uc2b5\ub2c8\ub2e4. \ube0c\ub77c\uc6b0\uc800\uc758 \ub2e4\uc6b4\ub85c\ub4dc \ud56d\ubaa9\uc744 \ud655\uc778\ud574 \uc8fc\uc138\uc694.", "saveFail": "\uc0ac\uc9c4\uc744 \uc800\uc7a5\ud558\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. ", "copied": "\uc9c4\ub2e8 \uc815\ubcf4\ub97c \ubcf5\uc0ac\ud588\uc2b5\ub2c8\ub2e4.", "copyFail": "\uc790\ub3d9 \ubcf5\uc0ac\ub97c \uc0ac\uc6a9\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4. \uc9c4\ub2e8 \uc815\ubcf4\ub97c \uc120\ud0dd\ud558\uc5ec \ubcf5\uc0ac\ud574 \uc8fc\uc138\uc694.", "spring": "\ucd98\ucd94\ubcf5", "winter": "\ub3d9\ubcf5", "summer": "\ud558\ubcf5", "sports": "\uccb4\uc721\ubcf5", "pants": "\ubc14\uc9c0\ud615", "skirt": "\uce58\ub9c8\ud615"};
+/* Camera boot is independent of MediaPipe. No static remote imports. */
+(function () {
+  'use strict';
+  const BUILD = 'CAMERA FIX v2.1';
+  const VERSION = '0.10.21';
+  const CDN = [
+    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@' + VERSION,
+    'https://unpkg.com/@mediapipe/tasks-vision@' + VERSION
+  ];
+  const MODEL = 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
+  const $ = id => document.getElementById(id);
+  const video = $('video'), canvas = $('canvas'), ctx = canvas.getContext('2d');
+  const notes = [], images = {}, missing = new Set();
+  const garments = {
+    spring: {top: 'blazer', pants: 'trousers', skirt: 'skirt'},
+    winter: {top: 'hoodie', pants: 'trousers', skirt: 'skirt'},
+    summer: {top: 'summer_shirt', pants: 'shorts', skirt: 'skort'},
+    sports: {top: 'sports_jacket', pants: 'sports_pants', skirt: 'sports_pants'}
+  };
+  let season = 'spring', bottom = 'pants', scale = 1;
+  let stream = null, front = true, mirror = true, started = false, opening = false;
+  let session = 0, animation = 0, frameCount = 0, cameraOnly = false;
+  let pose = null, poseLoading = false, poseState = 'idle', poseSource = '';
+  let landmarks = null, lastDetect = 0, lastVideoTime = -1;
+  let offsetX = 0, offsetY = 0, drag = null;
+
+  function text(id, value) {
+    if ($(id).textContent !== value) $(id).textContent = value;
+  }
+  function banner(id, message) {
+    $(id).hidden = !message;
+    text(id, message || '');
+  }
+  function cameraStatus(message, ok = false) {
+    text('status', message);
+    $('dot').classList.toggle('on', ok);
+  }
+  function log(kind, detail) {
+    notes.push(new Date().toLocaleTimeString() + ' ' + kind + ': ' + String(detail).slice(0, 400));
+    if (notes.length > 14) notes.shift();
+    diagnostics();
+  }
+  function diagnostics() {
+    const d = {
+      build: BUILD, secureContext: window.isSecureContext,
+      cameraAPI: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
+      embedded: window.self !== window.top, browser: navigator.userAgent,
+      camera: started ? 'running' : opening ? 'requesting' : 'stopped',
+      video: video.videoWidth + 'x' + video.videoHeight,
+      framesDrawn: frameCount, autoTracking: $('autoTrack').checked,
+      tracking: poseState, trackingSource: poseSource,
+      missingImages: Array.from(missing), log: notes
+    };
+    text('diagnostics', JSON.stringify(d, null, 2));
+  }
+  function namedError(name, message) {
+    const e = new Error(message || name); e.name = name; return e;
+  }
+  function timeout(promise, ms, label, onLate) {
+    let expired = false, timer;
+    const watched = Promise.resolve(promise).then(value => {
+      if (expired && onLate) onLate(value);
+      return value;
+    });
+    return Promise.race([
+      watched,
+      new Promise((_, reject) => { timer = setTimeout(() => {
+        expired = true; reject(namedError(label, label));
+      }, ms); })
+    ]).finally(() => clearTimeout(timer));
+  }
+  function stopTracks(s) { if (s) s.getTracks().forEach(t => t.stop()); }
+  function controls() {
+    $('start').disabled = opening;
+    $('cameraOnly').disabled = opening;
+    $('flip').disabled = !started || opening;
+    $('save').disabled = !started || opening;
+    $('stop').disabled = !started && !opening;
+    $('retryPose').disabled = !started || cameraOnly || poseLoading || !$('autoTrack').checked;
+    text('start', opening ? MSG.busy : started ? MSG.restart : MSG.start);
+  }
+  function stopCamera(showMessage = true) {
+    session++;
+    started = false; opening = false;
+    cancelAnimationFrame(animation); animation = 0;
+    stopTracks(stream); stream = null;
+    video.pause(); video.srcObject = null;
+    landmarks = null; lastVideoTime = -1;
+    $('empty').style.display = 'grid';
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (showMessage) cameraStatus(MSG.stopped);
+    controls(); diagnostics();
+  }
+  function cameraErrorMessage(e) {
+    const byName = {
+      InsecureContext: MSG.secure, CameraUnsupported: MSG.unsupported,
+      NotAllowedError: MSG.denied, SecurityError: MSG.denied,
+      PermissionDeniedError: MSG.denied,
+      NotFoundError: MSG.notfound, DevicesNotFoundError: MSG.notfound,
+      NotReadableError: MSG.unreadable, TrackStartError: MSG.unreadable,
+      AbortError: MSG.unreadable, CameraPermissionTimeout: MSG.permissionTimeout,
+      VideoTimeout: MSG.videoTimeout
+    };
+    return (byName[e.name] || MSG.generic) + '\n[' + (e.name || 'Error') + ']';
+  }
+  function waitVideo(id) {
+    return new Promise((resolve, reject) => {
+      const start = performance.now();
+      function check() {
+        if (id !== session) return reject(namedError('Cancelled'));
+        if (video.readyState >= 2 && video.videoWidth > 0) return resolve();
+        if (performance.now() - start > 12000) return reject(namedError('VideoTimeout'));
+        setTimeout(check, 60);
+      }
+      check();
+    });
+  }
+  async function startCamera(only = false) {
+    if (opening) return;
+    stopCamera(false);
+    const id = ++session;
+    opening = true; cameraOnly = only;
+    frameCount = 0; banner('cameraError', ''); text('saveNotice', '');
+    cameraStatus(MSG.waiting); controls(); log('camera', 'request started');
+    let incoming = null;
+    const waitTimer = setTimeout(() => {
+      if (session === id && opening) cameraStatus(MSG.waitingLong);
+    }, 7000);
+    try {
+      if (!window.isSecureContext) throw namedError('InsecureContext');
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw namedError('CameraUnsupported');
+      const request = constraints => timeout(
+        navigator.mediaDevices.getUserMedia(constraints), 45000,
+        'CameraPermissionTimeout', stopTracks
+      );
+      try {
+        incoming = await request({audio: false, video: {
+          facingMode: {ideal: front ? 'user' : 'environment'},
+          width: {ideal: 720}, height: {ideal: 960}, frameRate: {ideal: 24, max: 30}
+        }});
+      } catch (e) {
+        if (id !== session) throw namedError('Cancelled');
+        if (e.name !== 'OverconstrainedError') throw e;
+        log('camera', 'retrying with video:true');
+        incoming = await request({audio: false, video: true});
+      }
+      if (id !== session) { stopTracks(incoming); return; }
+      stream = incoming;
+      video.muted = true; video.playsInline = true; video.autoplay = true;
+      video.srcObject = stream;
+      await timeout(video.play(), 12000, 'VideoTimeout');
+      await waitVideo(id);
+      if (id !== session) { stopTracks(incoming); return; }
+      const setting = stream.getVideoTracks()[0].getSettings();
+      mirror = setting.facingMode ? setting.facingMode === 'user' : front;
+      started = true; opening = false;
+      $('empty').style.display = 'none';
+      cameraStatus(MSG.live, true); controls(); log('camera', 'playing');
+      stream.getVideoTracks()[0].addEventListener('ended', () => {
+        if (id !== session) return;
+        stopCamera(false); cameraStatus(MSG.cameraFail); banner('cameraError', MSG.unreadable);
+      });
+      // Start painting first; model loading is never awaited here.
+      animation = requestAnimationFrame(render);
+      if (!cameraOnly && $('autoTrack').checked) {
+        setTimeout(() => { if (started && id === session) loadPose(); }, 100);
+      }
+    } catch (e) {
+      stopTracks(incoming);
+      if (id !== session || e.name === 'Cancelled') return;
+      stopCamera(false);
+      cameraStatus(MSG.cameraFail); banner('cameraError', cameraErrorMessage(e));
+      log('camera error', e.name + ': ' + e.message);
+    } finally {
+      clearTimeout(waitTimer);
+      if (id === session) { opening = false; controls(); diagnostics(); }
+    }
+  }
+
+  async function modelBytes() {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 45000);
+    try {
+      const response = await fetch(MODEL, {signal: controller.signal, credentials: 'omit'});
+      if (!response.ok) throw new Error('Model HTTP ' + response.status);
+      return new Uint8Array(await response.arrayBuffer());
+    } finally { clearTimeout(timer); }
+  }
+  async function loadPose() {
+    if (pose || poseLoading) return;
+    poseLoading = true; poseState = 'loading';
+    controls(); banner('modelWarning', ''); text('poseStatus', MSG.poseLoading);
+    log('tracking', 'initializing');
+    try {
+      let api = null, vision = null, lastError = null;
+      for (const base of CDN) {
+        try {
+          // Dynamic imports fail inside this catch, not before button binding.
+          api = await timeout(import(base + '/vision_bundle.mjs'), 12000, 'LibraryTimeout');
+          vision = await timeout(api.FilesetResolver.forVisionTasks(base + '/wasm'), 12000, 'WasmTimeout');
+          poseSource = base; break;
+        } catch (e) {
+          lastError = e; api = null; vision = null;
+          log('tracking source failed', base + ' | ' + e.message);
+        }
+      }
+      if (!api || !vision) throw lastError || new Error('Library unavailable');
+      text('poseStatus', MSG.poseModel);
+      const bytes = await modelBytes();
+      text('poseStatus', MSG.poseInit);
+      const created = await timeout(api.PoseLandmarker.createFromOptions(vision, {
+        baseOptions: {modelAssetBuffer: bytes, delegate: 'CPU'},
+        runningMode: 'VIDEO', numPoses: 1,
+        minPoseDetectionConfidence: 0.4, minPosePresenceConfidence: 0.4,
+        minTrackingConfidence: 0.4, outputSegmentationMasks: false
+      }), 25000, 'ModelInitTimeout', value => { try { value.close(); } catch (_) {} });
+      pose = created; poseState = 'ready';
+      lastDetect = 0; lastVideoTime = -1;
+      log('tracking', 'ready');
+    } catch (e) {
+      poseState = 'error'; landmarks = null;
+      banner('modelWarning', MSG.poseFail + '\n[' + (e.name || 'Error') + ']');
+      log('tracking error', e.name + ': ' + e.message);
+    } finally {
+      poseLoading = false; controls(); diagnostics(); updatePoseStatus();
+    }
+  }
+  function selection() {
+    const g = garments[season];
+    return [season === 'summer' && bottom === 'skirt' ? 'summer_blouse' : g.top, g[bottom]];
+  }
+  function assetsStatus() {
+    const failed = selection().filter(n => missing.has(n));
+    banner('assetWarning', failed.length ? MSG.missingAssets + failed.map(n => 'assets/' + n + '.png').join(', ') : '');
+  }
+  function refresh() {
+    const [a, b] = selection();
+    $('topPreview').src = images[a].src;
+    $('bottomPreview').src = images[b].src;
+    text('outfitDesc', MSG[season] + ' / ' + MSG[season === 'sports' ? 'pants' : bottom]);
+    assetsStatus();
+  }
+  function validPose() {
+    return !!(landmarks && [11, 12, 23, 24].every(i => landmarks[i] &&
+      (landmarks[i].visibility === undefined || landmarks[i].visibility > 0.3)));
+  }
+  function updatePoseStatus() {
+    let message;
+    if (cameraOnly && started) message = MSG.cameraOnly;
+    else if (!$('autoTrack').checked) message = MSG.manual;
+    else if (poseLoading) return; // Keep the download step visible.
+    else if (poseState === 'error') message = MSG.manual;
+    else if (pose) message = validPose() ? MSG.poseDetected : MSG.poseSearching;
+    else message = MSG.poseIdle;
+    text('poseStatus', message);
+  }
+  function drawImage(name, x, y, w, h) {
+    const im = images[name];
+    if (im && im.complete && im.naturalWidth > 0 && w > 0 && h > 0) {
+      ctx.drawImage(im, x + offsetX, y + offsetY, w, h);
+    }
+  }
+  function drawUniform(W, H, vw, vh, ratio, ox, oy) {
+    const [top, lower] = selection();
+    const shortLower = ['shorts', 'skort', 'sports_shorts'].includes(lower);
+    const skirtLower = lower === 'skirt';
+    let sx, sy, sw, sh, bx, by, bw, bh;
+    const point = i => {
+      const p = landmarks[i], x = p.x * vw * ratio + ox;
+      return {x: mirror ? W - x : x, y: p.y * vh * ratio + oy};
+    };
+    if ($('autoTrack').checked && pose && validPose()) {
+      const L = point(11), R = point(12), HL = point(23), HR = point(24);
+      const shoulder = Math.abs(L.x - R.x), hipY = (HL.y + HR.y) / 2;
+      const shoulderY = (L.y + R.y) / 2, midX = (L.x + R.x + HL.x + HR.x) / 4;
+      const torso = Math.max(45, hipY - shoulderY);
+      sw = Math.max(60, shoulder * 1.58) * scale; sh = torso * 1.48 * scale;
+      sx = midX - sw / 2; sy = shoulderY - torso * 0.24;
+      let legLen = torso * 1.45;
+      const ankles = [27, 28].filter(i => landmarks[i] && landmarks[i].visibility > 0.3);
+      if (ankles.length) legLen = Math.max(torso * 0.8, ankles.reduce((s, i) => s + point(i).y, 0) / ankles.length - hipY);
+      bw = Math.max(sw * 0.83, Math.abs(HL.x - HR.x) * 1.7 * scale);
+      bh = legLen * (shortLower ? 0.48 : skirtLower ? 0.65 : 1.04) * scale;
+      bx = midX - bw / 2; by = hipY - torso * 0.08;
+    } else {
+      sw = W * 0.54 * scale; sh = H * 0.32 * scale;
+      sx = (W - sw) / 2; sy = H * 0.25;
+      bw = W * 0.46 * scale; bh = H * (shortLower ? 0.18 : skirtLower ? 0.23 : 0.34) * scale;
+      bx = (W - bw) / 2; by = sy + sh * 0.88;
+    }
+    drawImage(lower, bx, by, bw, bh);
+    drawImage(top, sx, sy, sw, sh);
+  }
+  function render(now) {
+    animation = 0;
+    if (!started || !stream) return;
+    try {
+      if (video.readyState >= 2 && video.videoWidth) {
+        const W = canvas.width, H = canvas.height, vw = video.videoWidth, vh = video.videoHeight;
+        const ratio = Math.max(W / vw, H / vh), dw = vw * ratio, dh = vh * ratio;
+        const ox = (W - dw) / 2, oy = (H - dh) / 2;
+        ctx.clearRect(0, 0, W, H);
+        ctx.save();
+        if (mirror) { ctx.translate(W, 0); ctx.scale(-1, 1); }
+        ctx.drawImage(video, ox, oy, dw, dh); ctx.restore();
+        if (!cameraOnly && $('autoTrack').checked && pose && now - lastDetect > 140 && video.currentTime !== lastVideoTime) {
+          lastDetect = now; lastVideoTime = video.currentTime;
+          try { landmarks = pose.detectForVideo(video, now).landmarks[0] || null; }
+          catch (e) {
+            const broken = pose; pose = null; poseState = 'error'; landmarks = null;
+            try { broken.close(); } catch (_) {}
+            banner('modelWarning', MSG.poseInferFail); log('inference error', e.message);
+          }
+        }
+        if (!cameraOnly) drawUniform(W, H, vw, vh, ratio, ox, oy);
+        updatePoseStatus(); frameCount++;
+      }
+    } catch (e) {
+      log('render error', e.message);
+      stopCamera(false); cameraStatus(MSG.cameraFail);
+      banner('cameraError', MSG.generic + '\n[' + e.name + ']'); return;
+    }
+    animation = requestAnimationFrame(render);
+  }
+
+  // Bind buttons immediately; all remote code is optional for camera startup.
+  $('start').addEventListener('click', () => startCamera(false));
+  $('cameraOnly').addEventListener('click', () => startCamera(true));
+  $('stop').addEventListener('click', () => stopCamera());
+  $('flip').addEventListener('click', () => { front = !front; startCamera(cameraOnly); });
+  $('autoTrack').addEventListener('change', () => {
+    landmarks = null; offsetX = offsetY = 0;
+    if (started && !cameraOnly && $('autoTrack').checked) loadPose();
+    updatePoseStatus(); controls();
+  });
+  $('retryPose').addEventListener('click', () => {
+    if (poseLoading) return;
+    if (pose) { try { pose.close(); } catch (_) {} pose = null; }
+    poseState = 'idle'; landmarks = null; loadPose();
+  });
+  document.querySelectorAll('[data-season]').forEach(b => b.addEventListener('click', () => {
+    season = b.dataset.season;
+    document.querySelectorAll('[data-season]').forEach(x => x.classList.toggle('active', x === b));
+    refresh();
+  }));
+  document.querySelectorAll('[data-bottom]').forEach(b => b.addEventListener('click', () => {
+    bottom = b.dataset.bottom;
+    document.querySelectorAll('[data-bottom]').forEach(x => x.classList.toggle('active', x === b));
+    refresh();
+  }));
+  $('scale').addEventListener('input', e => {
+    scale = Number(e.target.value) / 100; text('scaleText', e.target.value + '%');
+  });
+  canvas.addEventListener('pointerdown', e => {
+    if (!started || cameraOnly) return;
+    drag = {x: e.clientX, y: e.clientY, ox: offsetX, oy: offsetY};
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const rect = canvas.getBoundingClientRect();
+    offsetX = drag.ox + (e.clientX - drag.x) * canvas.width / rect.width;
+    offsetY = drag.oy + (e.clientY - drag.y) * canvas.height / rect.height;
+  });
+  ['pointerup', 'pointercancel'].forEach(name => canvas.addEventListener(name, () => { drag = null; }));
+  $('save').addEventListener('click', () => {
+    if (!started || frameCount < 1) return;
+    try {
+      canvas.toBlob(blob => {
+        if (!blob) { text('saveNotice', MSG.saveFail); return; }
+        const url = URL.createObjectURL(blob), a = document.createElement('a');
+        a.href = url; a.download = 'hansin-uniform-ar.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 15000);
+        text('saveNotice', MSG.saveOk);
+      }, 'image/png');
+    } catch (e) { text('saveNotice', MSG.saveFail + e.message); }
+  });
+  $('copyDiagnostics').addEventListener('click', async () => {
+    diagnostics();
+    try { await navigator.clipboard.writeText($('diagnostics').textContent); text('copyDiagnostics', MSG.copied); }
+    catch (_) { text('copyDiagnostics', MSG.copyFail); }
+  });
+  document.querySelector('.diagnostics').addEventListener('toggle', diagnostics);
+  window.addEventListener('pagehide', () => stopCamera(false));
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stopCamera(); });
+  window.addEventListener('error', e => {
+    if (e.message) { banner('cameraError', MSG.generic + '\n' + e.message); log('script error', e.message); }
+  });
+  window.addEventListener('unhandledrejection', e => {
+    banner('cameraError', MSG.generic); log('unhandled rejection', String(e.reason));
+  });
+  for (const name of ['blazer', 'trousers', 'skirt', 'hoodie', 'summer_shirt', 'summer_blouse', 'shorts', 'skort', 'sports_jacket', 'sports_pants']) {
+    const im = new Image(); images[name] = im;
+    im.onload = () => { missing.delete(name); assetsStatus(); };
+    im.onerror = () => { missing.add(name); assetsStatus(); log('asset error', name + '.png'); };
+    im.src = new URL('assets/' + name + '.png', document.baseURI).href;
+  }
+  refresh(); controls(); cameraStatus(MSG.ready); updatePoseStatus();
+  log('boot', 'buttons connected; remote library not loaded');
+})();
+
+</script><noscript>JavaScript is required.</noscript></body></html>
